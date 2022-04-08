@@ -1,4 +1,4 @@
-package com.eternalcode.randomtp.shared;
+package com.eternalcode.randomtp.test;
 
 import com.eternalcode.randomtp.shared.Scheduler;
 

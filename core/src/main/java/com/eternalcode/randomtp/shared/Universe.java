@@ -18,7 +18,7 @@ public class Universe {
         return this.name != null;
     }
 
-    public static Universe create(String name) {
+    public static Universe of(String name) {
         if (name == null) {
             throw new IllegalArgumentException("name cannot be null");
         }

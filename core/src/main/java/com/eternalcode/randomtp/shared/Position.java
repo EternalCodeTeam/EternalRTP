@@ -146,4 +146,8 @@ public class Position {
         return new Position(this.universe, x / length, y / length, z / length, this.pitch, this.yaw);
     }
 
+    public double distance(Position position) {
+        return Math.sqrt((x - position.x) * (x - position.x) + (y - position.y) * (y - position.y) + (z - position.z) * (z - position.z));
+    }
+
 }

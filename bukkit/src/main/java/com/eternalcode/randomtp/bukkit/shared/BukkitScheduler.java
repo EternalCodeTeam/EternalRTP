@@ -2,14 +2,13 @@ package com.eternalcode.randomtp.bukkit.shared;
 
 import com.eternalcode.randomtp.shared.Scheduler;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
 
-public class SchedulerBukkit implements Scheduler {
+class BukkitScheduler implements Scheduler {
 
     private final Plugin plugin;
-    private final BukkitScheduler rootScheduler;
+    private final org.bukkit.scheduler.BukkitScheduler rootScheduler;
 
-    public SchedulerBukkit(Plugin plugin) {
+    public BukkitScheduler(Plugin plugin) {
         this.plugin = plugin;
         this.rootScheduler = this.plugin.getServer().getScheduler();
     }

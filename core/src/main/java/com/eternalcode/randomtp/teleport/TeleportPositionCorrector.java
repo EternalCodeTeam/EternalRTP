@@ -5,9 +5,9 @@ import com.eternalcode.randomtp.shared.Position;
 import java.util.concurrent.CompletableFuture;
 
 @FunctionalInterface
-public interface HeightCorrector {
+public interface TeleportPositionCorrector {
 
-    HeightCorrector NONE = CompletableFuture::completedFuture;
+    TeleportPositionCorrector NONE = CompletableFuture::completedFuture;
 
     CompletableFuture<Position> correctPosition(Position position);
 

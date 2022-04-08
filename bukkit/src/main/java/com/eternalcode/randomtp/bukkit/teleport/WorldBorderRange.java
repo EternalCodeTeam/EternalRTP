@@ -1,6 +1,6 @@
 package com.eternalcode.randomtp.bukkit.teleport;
 
-import com.eternalcode.randomtp.bukkit.shared.BukkitConverter;
+import com.eternalcode.randomtp.bukkit.shared.BukkitProvider;
 import com.eternalcode.randomtp.shared.Box;
 import com.eternalcode.randomtp.shared.Position;
 import com.eternalcode.randomtp.shared.Universe;
@@ -11,10 +11,10 @@ public class WorldBorderRange implements TeleportRange {
 
     @Override
     public Box getRange(Universe universe) {
-        return BukkitConverter.convert(universe)
+        return BukkitProvider.convert(universe)
                 .map(World::getWorldBorder)
                 .map(border -> {
-                    Position center = BukkitConverter.convert(border.getCenter());
+                    Position center = BukkitProvider.convert(border.getCenter());
                     double size = border.getSize();
 
                     return Box.of(center.add(size / 2), center.subtract(size / 2));

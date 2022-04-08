@@ -1,10 +1,12 @@
-package com.eternalcode.randomtp.shared;
+package com.eternalcode.randomtp.test;
 
 import com.eternalcode.randomtp.profile.Profile;
+import com.eternalcode.randomtp.shared.Position;
+import com.eternalcode.randomtp.shared.Universe;
 
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 public class TestProfile implements Profile {
 
@@ -21,6 +23,16 @@ public class TestProfile implements Profile {
     }
 
     @Override
+    public Position getPosition() {
+        return Position.ZERO;
+    }
+
+    @Override
+    public Optional<Position> getTargetPosition() {
+        return Optional.empty();
+    }
+
+    @Override
     public Universe getUniverse() {
         return Universe.NONE;
     }
@@ -34,4 +46,5 @@ public class TestProfile implements Profile {
     public int getTeleports() {
         return this.teleportCount;
     }
+
 }

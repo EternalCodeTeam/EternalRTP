@@ -1,19 +1,14 @@
 package com.eternalcode.randomtp.bukkit;
 
-import com.eternalcode.randomtp.bukkit.shared.BukkitConverter;
-import com.eternalcode.randomtp.bukkit.shared.SchedulerBukkit;
-import com.eternalcode.randomtp.bukkit.teleport.WorldBorderRange;
-import com.eternalcode.randomtp.bukkit.teleport.WorldHeightCorrector;
 import com.eternalcode.randomtp.EternalRandomTp;
-import com.eternalcode.randomtp.command.ProfileParameter;
-import com.eternalcode.randomtp.profile.Profile;
-import com.eternalcode.randomtp.shared.Scheduler;
+import com.eternalcode.randomtp.bukkit.shared.BukkitProvider;
+import com.eternalcode.randomtp.bukkit.teleport.BukkitController;
+import com.eternalcode.randomtp.bukkit.teleport.WorldBorderRange;
+import com.eternalcode.randomtp.bukkit.teleport.WorldTeleportPositionCorrector;
 import com.eternalcode.randomtp.teleport.RandomTeleportAlgorithm;
-import com.eternalcode.randomtp.teleport.TeleportService;
 import dev.rollczi.litecommands.bukkit.LiteBukkitFactory;
+import org.bukkit.block.BlockFace;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.Optional;
 
 public class PluginEternalRandomTp extends JavaPlugin {
 
@@ -21,16 +16,20 @@ public class PluginEternalRandomTp extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        Scheduler scheduler = new SchedulerBukkit(this);
-        TeleportService teleportService = new TeleportService(scheduler, new RandomTeleportAlgorithm(), new WorldBorderRange(), new WorldHeightCorrector());
-
         this.eternalRandomTp = EternalRandomTp.builder()
+                .game(BukkitProvider.createGame())
+                .scheduler(BukkitProvider.createScheduler(this))
                 .dataFolder(this.getDataFolder())
-                .scheduler(scheduler)
-                .teleportService(teleportService)
+
+                .teleportRange(new WorldBorderRange())
+                .corrector(new WorldTeleportPositionCorrector())
+                .algorithm(new RandomTeleportAlgorithm())
+
                 .liteCommandsBuilder(LiteBukkitFactory.builder(this.getServer(), "eternal-randomtp"))
-                .profileExtractor(invocation -> BukkitConverter.convert(invocation.sender().getSender()))
+                .profileExtractor(invocation -> BukkitProvider.convert(invocation.sender().getSender()))
                 .build();
+
+        this.getServer().getPluginManager().registerEvents(new BukkitController(this.eternalRandomTp.getTeleportGameController()), this);
     }
 
     public EternalRandomTp getEternalRandomTp() {

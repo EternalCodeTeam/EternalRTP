@@ -1,10 +1,14 @@
 package com.eternalcode.randomtp.teleport;
 
+import com.eternalcode.randomtp.profile.Profile;
+
 public class TeleportResult {
 
+    private final Profile profile;
     private final boolean success;
 
-    private TeleportResult(boolean success) {
+    private TeleportResult(Profile profile, boolean success) {
+        this.profile = profile;
         this.success = success;
     }
 
@@ -16,12 +20,12 @@ public class TeleportResult {
         return !success;
     }
 
-    public static TeleportResult success() {
-        return new TeleportResult(true);
+    public static TeleportResult success(Profile profile) {
+        return new TeleportResult(profile, true);
     }
 
-    public static TeleportResult failure() {
-        return new TeleportResult(false);
+    public static TeleportResult failure(Profile profile) {
+        return new TeleportResult(profile, false);
     }
 
 }
