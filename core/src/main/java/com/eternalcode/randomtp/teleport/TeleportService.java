@@ -30,8 +30,15 @@ public class TeleportService {
     public void teleportProfile(Profile profile, Universe universe, TeleportCallback callback) {
         this.findAsyncPosition(universe, this.settings.getAttempts()).thenAccept(position -> {
             if (position.isPresent()) {
-                profile.teleport(position.get());
-                callback.call(TeleportResult.success());
+                profile.teleport(position.get()).thenAccept(isSuccess -> {
+                    if (isSuccess) {
+                        callback.call(TeleportResult.success());
+                        return;
+                    }
+
+                    callback.call(TeleportResult.failure());
+                });
+
                 return;
             }
 

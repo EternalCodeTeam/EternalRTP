@@ -1,4 +1,4 @@
-package com.eternalcode.bukkit.shared;
+package com.eternalcode.randomtp.bukkit.shared;
 
 import com.eternalcode.randomtp.shared.Scheduler;
 import org.bukkit.plugin.Plugin;

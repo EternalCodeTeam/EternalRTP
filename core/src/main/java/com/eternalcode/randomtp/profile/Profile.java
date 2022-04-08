@@ -4,6 +4,7 @@ import com.eternalcode.randomtp.shared.Position;
 import com.eternalcode.randomtp.shared.Universe;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public interface Profile {
 
@@ -11,6 +12,6 @@ public interface Profile {
 
     Universe getUniverse();
 
-    void teleport(Position position);
+    CompletableFuture<Boolean> teleport(Position position);
 
 }

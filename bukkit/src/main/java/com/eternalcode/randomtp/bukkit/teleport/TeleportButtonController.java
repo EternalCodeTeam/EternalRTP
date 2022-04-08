@@ -1,4 +1,4 @@
-package com.eternalcode.bukkit.teleport;
+package com.eternalcode.randomtp.bukkit.teleport;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

@@ -3,17 +3,13 @@ plugins {
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
-group = "com.eternalcode"
-version = "1.0.0-SNAPSHOT"
-
 allprojects {
-    group = "core"
-    version = "1.0.3-BETA"
+    group = "com.eternalcode"
+    version = "1.0.0-SNAPSHOT"
 
     apply(plugin = "java")
     apply(plugin = "com.github.johnrengelman.shadow")
 }
-
 
 subprojects {
     repositories {

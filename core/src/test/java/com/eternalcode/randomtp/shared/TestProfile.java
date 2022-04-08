@@ -3,6 +3,7 @@ package com.eternalcode.randomtp.shared;
 import com.eternalcode.randomtp.profile.Profile;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class TestProfile implements Profile {
@@ -20,8 +21,14 @@ public class TestProfile implements Profile {
     }
 
     @Override
-    public void teleport(Position position) {
+    public Universe getUniverse() {
+        return Universe.NONE;
+    }
+
+    @Override
+    public CompletableFuture<Boolean> teleport(Position position) {
         this.teleportCount++;
+        return CompletableFuture.completedFuture(true);
     }
 
     public int getTeleports() {

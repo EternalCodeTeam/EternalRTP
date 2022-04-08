@@ -1,6 +1,5 @@
-package com.eternalcode.bukkit.shared;
+package com.eternalcode.randomtp.bukkit.shared;
 
-import com.eternalcode.bukkit.shared.BukkitAdapter;
 import com.eternalcode.randomtp.profile.Profile;
 import com.eternalcode.randomtp.shared.Position;
 import com.eternalcode.randomtp.shared.Universe;
@@ -9,17 +8,17 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
-public class BukkitProfile implements Profile {
+class PlayerBukkitProfile implements Profile {
 
     private final Server server;
     private final UUID uuid;
 
-    public BukkitProfile(Server server, UUID uuid) {
+    PlayerBukkitProfile(Server server, UUID uuid) {
         this.server = server;
         this.uuid = uuid;
     }
-
 
     @Override
     public UUID getUuid() {
@@ -38,14 +37,14 @@ public class BukkitProfile implements Profile {
     }
 
     @Override
-    public void teleport(Position position) {
+    public CompletableFuture<Boolean> teleport(Position position) {
         Player player = this.server.getPlayer(this.uuid);
 
         if (player == null) {
-            return;
+            return CompletableFuture.completedFuture(false);
         }
 
-        PaperLib.teleportAsync(player, BukkitAdapter.adapt(position));
+        return PaperLib.teleportAsync(player, BukkitConverter.convert(position));
     }
 
 }
