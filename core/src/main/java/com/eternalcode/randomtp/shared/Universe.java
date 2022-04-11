@@ -5,6 +5,7 @@ import java.util.Objects;
 public class Universe {
 
     public static final Universe NONE = new Universe(null);
+    public static final Universe WORLD = new Universe("world");
 
     private final String name;
 

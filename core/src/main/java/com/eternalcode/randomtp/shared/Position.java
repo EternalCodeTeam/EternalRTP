@@ -135,6 +135,10 @@ public class Position {
         return new Position(this.universe, this.x, this.y, z, this.yaw, this.pitch);
     }
 
+    public Position withCoords(double x, double y, double z) {
+        return new Position(this.universe, x, y, z, this.yaw, this.pitch);
+    }
+
     public Position withYaw(float yaw) {
         return new Position(this.universe, this.x, this.y, this.z, yaw, this.pitch);
     }
