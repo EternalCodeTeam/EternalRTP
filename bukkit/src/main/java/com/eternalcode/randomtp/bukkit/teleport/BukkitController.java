@@ -6,14 +6,11 @@ import com.eternalcode.randomtp.shared.BlockState;
 import com.eternalcode.randomtp.shared.BlockType;
 import com.eternalcode.randomtp.shared.Position;
 import com.eternalcode.randomtp.teleport.game.TeleportGameController;
-import com.google.common.base.Stopwatch;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-
-import java.util.concurrent.TimeUnit;
 
 public class BukkitController implements Listener {
 
@@ -35,15 +32,12 @@ public class BukkitController implements Listener {
             return;
         }
 
-        Stopwatch started = Stopwatch.createStarted();
         Position position = BukkitProvider.convert(block.getLocation());
         BlockType blockType = BukkitProvider.convert(block.getType());
         Profile profile = BukkitProvider.convert(event.getPlayer());
         BlockState blockState = new BlockState(position, blockType);
 
         this.controller.handleRightClick(blockState, profile);
-        double millisecond = started.elapsed(TimeUnit.NANOSECONDS) / 1000000.0;
-        System.out.println("Right click took " + millisecond + " milliseconds");
     }
 
 }
