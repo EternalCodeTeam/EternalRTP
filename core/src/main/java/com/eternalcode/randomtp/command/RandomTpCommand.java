@@ -6,6 +6,7 @@ import com.eternalcode.randomtp.shared.BlockType;
 import com.eternalcode.randomtp.shared.Game;
 import com.eternalcode.randomtp.shared.Position;
 import com.eternalcode.randomtp.teleport.TeleportService;
+import com.eternalcode.randomtp.teleport.game.TeleportGame;
 import com.eternalcode.randomtp.teleport.game.TeleportGameRepository;
 import com.eternalcode.randomtp.teleport.game.TeleportType;
 import dev.rollczi.litecommands.annotations.Arg;
@@ -70,6 +71,23 @@ public class RandomTpCommand {
         this.repository.deleteTeleport(name);
         sender.sendMessage(pluginConfig.onDelete);
     }
+
+    @Execute(route = "list")
+    @Permission("eternalcode.command.randomtp.list")
+    public void list(LiteSender sender) {
+        for (TeleportGame teleport : this.repository.getTeleports()) {
+            String message = pluginConfig.teleportInfo
+                    .replace("{name}", teleport.getName())
+                    .replace("{type}", teleport.getType())
+                    .replace("{x}", String.valueOf(teleport.getCenter().getBlockX()))
+                    .replace("{y}", String.valueOf(teleport.getCenter().getBlockY()))
+                    .replace("{z}", String.valueOf(teleport.getCenter().getBlockZ()))
+                    .replace("{world}", teleport.getCenter().getUniverse().getName());
+
+            sender.sendMessage(message);
+        }
+    }
+
 
     @IgnoreMethod
     private void setButton(Position target, BlockType buttonType, int x, int z) {

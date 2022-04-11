@@ -26,6 +26,7 @@ public class CdnPluginConfig implements TeleportSettings, TeleportTypeRegistry {
     public String onNoPosition = "&cNie patrzysz na blok!";
     public String onCreate = "&aUtworzono nowy teleport!";
     public String onDelete = "&aUsunięto teleport!";
+    public String teleportInfo = "&aTeleport {name} ({type}) &a({x}, {y}, {z}) &a{world}";
 
     @Override
     public int getAttempts() {
