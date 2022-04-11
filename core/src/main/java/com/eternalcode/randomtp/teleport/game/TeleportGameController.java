@@ -41,6 +41,10 @@ public class TeleportGameController {
         Position pillarPosition = pillarState.getPosition();
 
         for (TeleportGame teleport : this.repository.getTeleports()) {
+            if (!teleport.getCenter().equals(pillarPosition)) {
+                continue;
+            }
+
             Optional<TeleportType> typeOptional = this.registry.getType(teleport.getType());
 
             if (typeOptional.isEmpty()) {
@@ -48,10 +52,6 @@ public class TeleportGameController {
             }
 
             TeleportType type = typeOptional.get();
-
-            if (teleport.getCenter().equals(pillarPosition)) {
-                continue;
-            }
 
             if (!type.getButtonBlock().equals(blockType)) {
                 continue;

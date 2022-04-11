@@ -7,13 +7,15 @@ import net.dzikoysk.cdn.serdes.SimpleDeserializer;
 import net.dzikoysk.cdn.serdes.SimpleSerializer;
 import panda.std.Result;
 
+import java.util.Locale;
+
 public class PositionComposer implements Composer<Position>, SimpleSerializer<Position>, SimpleDeserializer<Position> {
 
-    // universe;x;y;z;yaw;pitch
+    // universe:x:y:z:yaw:pitch
 
     @Override
     public Result<Position, Exception> deserialize(String source) {
-        String[] split = source.split(";");
+        String[] split = source.split(":");
 
         if (split.length != 6) {
             return Result.error(new Exception("Invalid position format"));
@@ -31,7 +33,7 @@ public class PositionComposer implements Composer<Position>, SimpleSerializer<Po
 
     @Override
     public Result<String, Exception> serialize(Position entity) {
-        return Result.ok(String.format("%s;%f;%f;%f;%f;%f", entity.getUniverse().getName(), entity.getX(), entity.getY(), entity.getZ(), entity.getYaw(), entity.getPitch()));
+        return Result.ok(String.format(Locale.US, "%s:%f:%f:%f:%f:%f", entity.getUniverse().getName(), entity.getX(), entity.getY(), entity.getZ(), entity.getYaw(), entity.getPitch()));
     }
 
 }

@@ -2,6 +2,7 @@ package com.eternalcode.randomtp.config;
 
 import com.eternalcode.randomtp.shared.BlockType;
 import com.eternalcode.randomtp.shared.Position;
+import com.eternalcode.randomtp.shared.Scheduler;
 import com.eternalcode.randomtp.shared.Universe;
 import net.dzikoysk.cdn.Cdn;
 import net.dzikoysk.cdn.CdnFactory;
@@ -13,6 +14,7 @@ import java.io.File;
 
 public class CdnConfigManager {
 
+    private final Scheduler scheduler;
     private final Cdn cdn = CdnFactory.createYamlLike().getSettings()
             .withComposer(BlockType.class, blockType -> Result.ok(blockType.getName()), name -> Result.ok(BlockType.of(name)))
             .withComposer(Universe.class, universe -> Result.ok(universe.getName()), name -> Result.ok(Universe.of(name)))
@@ -21,15 +23,25 @@ public class CdnConfigManager {
 
     private final File dataFolder;
     private final CdnPluginConfig pluginConfig = new CdnPluginConfig();
-    private final CdnTeleportGameRepository teleportData = new CdnTeleportGameRepository();
+    private final CdnTeleportGameRepository teleportData = new CdnTeleportGameRepository(this::renderAsync);
 
-    public CdnConfigManager(File dataFolder) {
+    public CdnConfigManager(Scheduler scheduler, File dataFolder) {
+        this.scheduler = scheduler;
         this.dataFolder = dataFolder;
     }
 
     public void load() {
         this.loadAndRender("config.yml", this.pluginConfig);
         this.loadAndRender("data.yml", this.teleportData);
+    }
+
+    public void render() {
+        this.render("config.yml", this.pluginConfig);
+        this.render("data.yml", this.teleportData);
+    }
+
+    public void renderAsync() {
+        this.scheduler.runAsync(this::render);
     }
 
     public CdnPluginConfig getPluginConfig() {
@@ -44,6 +56,12 @@ public class CdnConfigManager {
         Resource resource = Source.of(this.dataFolder, name);
 
         this.cdn.load(resource, object).orElseThrow(ex -> new RuntimeException("Failed to load config " + name, ex));
+        this.cdn.render(object, resource).orElseThrow(ex -> new RuntimeException("Failed to render config " + name, ex));
+    }
+
+    private void render(String name, Object object) {
+        Resource resource = Source.of(this.dataFolder, name);
+
         this.cdn.render(object, resource).orElseThrow(ex -> new RuntimeException("Failed to render config " + name, ex));
     }
 

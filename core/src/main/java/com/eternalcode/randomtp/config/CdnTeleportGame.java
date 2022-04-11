@@ -10,7 +10,7 @@ public class CdnTeleportGame implements TeleportGame {
 
     public String name = "default";
     public Position center = new Position(Universe.of("world"), 0, 0, 0);
-    public String type;
+    public String type = "normal";
 
     @Override
     public String getName() {

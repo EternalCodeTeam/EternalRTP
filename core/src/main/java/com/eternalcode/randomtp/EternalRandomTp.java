@@ -229,7 +229,7 @@ public class EternalRandomTp {
             Valid.notNull(profileExtractor, "Profile extractor cannot be null");
 
             if (cdnConfigManager == null) {
-                cdnConfigManager = new CdnConfigManager(dataFolder);
+                cdnConfigManager = new CdnConfigManager(scheduler, dataFolder);
             }
 
             cdnConfigManager.load();

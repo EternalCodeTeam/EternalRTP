@@ -9,10 +9,10 @@ public class Position {
     private final double x;
     private final double y;
     private final double z;
-    private final float pitch;
     private final float yaw;
+    private final float pitch;
 
-    public Position(Universe universe, double x, double y, double z, float pitch, float yaw) {
+    public Position(Universe universe, double x, double y, double z, float yaw, float pitch) {
         this.universe = universe;
         this.x = x;
         this.y = y;
@@ -61,89 +61,89 @@ public class Position {
         return (int) Math.floor(z);
     }
 
-    public float getPitch() {
-        return pitch;
-    }
-
     public float getYaw() {
         return yaw;
     }
 
+    public float getPitch() {
+        return pitch;
+    }
+
     public Position add(Position position) {
-        return new Position(this.universe, this.x + position.x, this.y + position.y, this.z + position.z, this.pitch, this.yaw);
+        return new Position(this.universe, this.x + position.x, this.y + position.y, this.z + position.z, this.yaw, this.pitch);
     }
 
     public Position add(double x, double y, double z) {
-        return new Position(this.universe, this.x + x, this.y + y, this.z + z, this.pitch, this.yaw);
+        return new Position(this.universe, this.x + x, this.y + y, this.z + z, this.yaw, this.pitch);
     }
 
     public Position add(double value) {
-        return new Position(this.universe, this.x + value, this.y + value, this.z + value, this.pitch, this.yaw);
+        return new Position(this.universe, this.x + value, this.y + value, this.z + value, this.yaw, this.pitch);
     }
 
     public Position subtract(Position position) {
-        return new Position(this.universe, this.x - position.x, this.y - position.y, this.z - position.z, this.pitch, this.yaw);
+        return new Position(this.universe, this.x - position.x, this.y - position.y, this.z - position.z, this.yaw, this.pitch);
     }
 
     public Position subtract(double x, double y, double z) {
-        return new Position(this.universe, this.x - x, this.y - y, this.z - z, this.pitch, this.yaw);
+        return new Position(this.universe, this.x - x, this.y - y, this.z - z, this.yaw, this.pitch);
     }
 
     public Position subtract(double value) {
-        return new Position(this.universe, this.x - value, this.y - value, this.z - value, this.pitch, this.yaw);
+        return new Position(this.universe, this.x - value, this.y - value, this.z - value, this.yaw, this.pitch);
     }
 
     public Position multiply(Position position) {
-        return new Position(this.universe, this.x * position.x, this.y * position.y, this.z * position.z, this.pitch, this.yaw);
+        return new Position(this.universe, this.x * position.x, this.y * position.y, this.z * position.z, this.yaw, this.pitch);
     }
 
     public Position multiply(double x, double y, double z) {
-        return new Position(this.universe, this.x * x, this.y * y, this.z * z, this.pitch, this.yaw);
+        return new Position(this.universe, this.x * x, this.y * y, this.z * z, this.yaw, this.pitch);
     }
 
     public Position multiply(double value) {
-        return new Position(this.universe, this.x * value, this.y * value, z * value, this.pitch, this.yaw);
+        return new Position(this.universe, this.x * value, this.y * value, z * value, this.yaw, this.pitch);
     }
 
     public Position divide(Position position) {
-        return new Position(this.universe, this.x / position.x, this.y / position.y, this.z / position.z, this.pitch, this.yaw);
+        return new Position(this.universe, this.x / position.x, this.y / position.y, this.z / position.z, this.yaw, this.pitch);
     }
 
     public Position divide(double x, double y, double z) {
-        return new Position(this.universe, this.x / x, this.y / y, this.z / z, this.pitch, this.yaw);
+        return new Position(this.universe, this.x / x, this.y / y, this.z / z, this.yaw, this.pitch);
     }
 
     public Position divide(double value) {
-        return new Position(this.universe, this.x / value, this.y / value, this.z / value, this.pitch, this.yaw);
+        return new Position(this.universe, this.x / value, this.y / value, this.z / value, this.yaw, this.pitch);
     }
 
     public Position withUniverse(Universe universe) {
-        return new Position(universe, this.x, this.y, this.z, this.pitch, this.yaw);
+        return new Position(universe, this.x, this.y, this.z, this.yaw, this.pitch);
     }
 
     public Position withX(double x) {
-        return new Position(this.universe, x, this.y, this.z, this.pitch, this.yaw);
+        return new Position(this.universe, x, this.y, this.z, this.yaw, this.pitch);
     }
 
     public Position withY(double y) {
-        return new Position(this.universe, this.x, y, this.z, this.pitch, this.yaw);
+        return new Position(this.universe, this.x, y, this.z, this.yaw, this.pitch);
     }
 
     public Position withZ(double z) {
-        return new Position(this.universe, this.x, this.y, z, this.pitch, this.yaw);
-    }
-
-    public Position withPitch(float pitch) {
-        return new Position(this.universe, this.x, this.y, this.z, pitch, this.yaw);
+        return new Position(this.universe, this.x, this.y, z, this.yaw, this.pitch);
     }
 
     public Position withYaw(float yaw) {
-        return new Position(this.universe, this.x, this.y, this.z, this.pitch, yaw);
+        return new Position(this.universe, this.x, this.y, this.z, yaw, this.pitch);
+    }
+
+    public Position withPitch(float pitch) {
+        return new Position(this.universe, this.x, this.y, this.z, this.yaw, pitch);
     }
 
     public Position normalize() {
         double length = Math.sqrt(x * x + y * y + z * z);
-        return new Position(this.universe, x / length, y / length, z / length, this.pitch, this.yaw);
+        return new Position(this.universe, x / length, y / length, z / length, this.yaw, this.pitch);
     }
 
     public double distance(Position position) {

@@ -12,7 +12,13 @@ import java.util.Optional;
 
 public class CdnTeleportGameRepository implements TeleportGameRepository {
 
+    private final Runnable update;
+
     public Map<String, CdnTeleportGame> teleports = Map.of("default", new CdnTeleportGame());
+
+    public CdnTeleportGameRepository(Runnable update) {
+        this.update = update;
+    }
 
     @Override
     public Collection<TeleportGame> getTeleports() {
@@ -30,6 +36,7 @@ public class CdnTeleportGameRepository implements TeleportGameRepository {
         copy.put(name, new CdnTeleportGame(name, position, type));
 
         this.teleports = Collections.unmodifiableMap(copy);
+        this.update.run();
     }
 
     @Override
@@ -38,6 +45,7 @@ public class CdnTeleportGameRepository implements TeleportGameRepository {
         copy.remove(name);
 
         this.teleports = Collections.unmodifiableMap(copy);
+        this.update.run();
     }
 
 

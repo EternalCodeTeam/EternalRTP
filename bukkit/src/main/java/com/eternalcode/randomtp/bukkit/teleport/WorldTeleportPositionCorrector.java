@@ -4,6 +4,7 @@ import com.eternalcode.randomtp.bukkit.shared.BukkitProvider;
 import com.eternalcode.randomtp.shared.Position;
 import com.eternalcode.randomtp.teleport.TeleportPositionCorrector;
 import io.papermc.lib.PaperLib;
+import org.bukkit.Location;
 import org.bukkit.World;
 
 import java.util.Optional;

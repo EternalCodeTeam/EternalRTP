@@ -42,8 +42,8 @@ class BukkitGame implements Game {
     public Optional<Button> getButtonIfPresent(Position pos) {
         Block block = BukkitProvider.convert(pos).getBlock();
 
-        return block.getBlockData() instanceof Switch switchData
-                ? Optional.of(new BukkitButton(block, switchData))
+        return block.getBlockData() instanceof Switch
+                ? Optional.of(new BukkitButton(block))
                 : Optional.empty();
     }
 
@@ -72,29 +72,36 @@ class BukkitGame implements Game {
     private static class BukkitButton implements Button {
 
         private final Block block;
-        private final Switch switchData;
 
-        private BukkitButton(Block block, Switch switchData) {
-            if (!block.getBlockData().equals(switchData)) {
-                throw new IllegalArgumentException("Block data and button data do not match");
+        private BukkitButton(Block block) {
+            if (!(block.getBlockData() instanceof Switch)) {
+                throw new IllegalStateException("Block is not a button");
             }
 
             this.block = block;
-            this.switchData = switchData;
         }
 
         @Override
         public boolean isPowered() {
-            return switchData.isPowered();
+            return this.block.getBlockData() instanceof Switch switchData && switchData.isPowered();
         }
 
         @Override
         public void setPowered(boolean powered) {
+            if (!(this.block.getBlockData() instanceof Switch switchData)) {
+                throw new IllegalStateException("Block is not a button");
+            }
+
             switchData.setPowered(powered);
+            this.block.setBlockData(switchData);
         }
 
         @Override
         public BlockState getPillar() {
+            if (!(this.block.getBlockData() instanceof Switch switchData)) {
+                throw new IllegalStateException("Block is not a button");
+            }
+
             if (switchData.getAttachedFace() == FaceAttachable.AttachedFace.FLOOR) {
                 return BukkitProvider.convert(block.getRelative(BlockFace.DOWN));
             }
@@ -103,7 +110,7 @@ class BukkitGame implements Game {
                 return BukkitProvider.convert(block.getRelative(BlockFace.UP));
             }
 
-            return BukkitProvider.convert(block.getRelative(switchData.getFacing()));
+            return BukkitProvider.convert(block.getRelative(switchData.getFacing().getOppositeFace()));
         }
 
         @Override
@@ -116,7 +123,12 @@ class BukkitGame implements Game {
                 return;
             }
 
-            switchData.setFacing(face);
+            if (!(this.block.getBlockData() instanceof Switch switchData)) {
+                throw new IllegalStateException("Block is not a button");
+            }
+
+            switchData.setFacing(face.getOppositeFace());
+            this.block.setBlockData(switchData);
         }
 
     }
