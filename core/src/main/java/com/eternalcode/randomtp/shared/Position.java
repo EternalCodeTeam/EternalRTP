@@ -1,5 +1,7 @@
 package com.eternalcode.randomtp.shared;
 
+import java.util.Objects;
+
 public class Position {
 
     public static final Position ZERO = new Position(0, 0, 0);
@@ -148,6 +150,24 @@ public class Position {
 
     public double distance(Position position) {
         return Math.sqrt((x - position.x) * (x - position.x) + (y - position.y) * (y - position.y) + (z - position.z) * (z - position.z));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof Position position)) {
+            return false;
+        }
+
+        return Double.compare(position.x, x) == 0 && Double.compare(position.y, y) == 0 && Double.compare(position.z, z) == 0 && Float.compare(position.yaw, yaw) == 0 && Float.compare(position.pitch, pitch) == 0 && universe.equals(position.universe);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(universe, x, y, z, yaw, pitch);
     }
 
 }

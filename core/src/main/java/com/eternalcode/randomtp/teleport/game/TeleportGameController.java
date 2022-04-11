@@ -31,7 +31,7 @@ public class TeleportGameController {
 
         Optional<Button> buttonOptional = game.getButtonIfPresent(position);
 
-        if (buttonOptional.isEmpty()) { // TODO: fix this
+        if (buttonOptional.isEmpty()) {
             return;
         }
 

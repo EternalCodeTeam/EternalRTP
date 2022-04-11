@@ -1,5 +1,7 @@
 package com.eternalcode.randomtp.shared;
 
+import java.util.Objects;
+
 public class Box {
 
     private final Position min;
@@ -35,4 +37,21 @@ public class Box {
         return new Box(new Position(minX, minY, minZ), new Position(maxX, maxY, maxZ));
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof Box box)) {
+            return false;
+        }
+
+        return min.equals(box.min) && max.equals(box.max);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(min, max);
+    }
 }

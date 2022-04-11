@@ -1,5 +1,7 @@
 package com.eternalcode.randomtp.shared;
 
+import java.util.Objects;
+
 public class Universe {
 
     public static final Universe NONE = new Universe(null);
@@ -28,6 +30,22 @@ public class Universe {
 
     public static Universe none() {
         return NONE;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+
+        if (!(obj instanceof Universe universe)) {
+            return false;
+        }
+
+        return name.equals(universe.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 
 }
