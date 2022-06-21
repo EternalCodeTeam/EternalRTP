@@ -19,4 +19,6 @@ public interface Profile {
 
     CompletableFuture<Boolean> teleport(Position position);
 
+    void sendMessage(String message);
+
 }

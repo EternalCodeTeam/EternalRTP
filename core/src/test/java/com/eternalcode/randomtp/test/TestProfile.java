@@ -43,6 +43,11 @@ public class TestProfile implements Profile {
         return CompletableFuture.completedFuture(true);
     }
 
+    @Override
+    public void sendMessage(String message) {
+
+    }
+
     public int getTeleports() {
         return this.teleportCount;
     }

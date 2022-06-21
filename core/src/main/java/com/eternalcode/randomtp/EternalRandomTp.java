@@ -2,6 +2,8 @@ package com.eternalcode.randomtp;
 
 import com.eternalcode.randomtp.command.ProfileParameter;
 import com.eternalcode.randomtp.command.RandomTpCommand;
+import com.eternalcode.randomtp.command.StringArg;
+import com.eternalcode.randomtp.command.TeleportGameArg;
 import com.eternalcode.randomtp.command.TeleportTypeArg;
 import com.eternalcode.randomtp.config.CdnConfigManager;
 import com.eternalcode.randomtp.config.CdnPluginConfig;
@@ -10,9 +12,11 @@ import com.eternalcode.randomtp.shared.Game;
 import com.eternalcode.randomtp.shared.Scheduler;
 import com.eternalcode.randomtp.shared.Valid;
 import com.eternalcode.randomtp.teleport.TeleportAlgorithm;
+import com.eternalcode.randomtp.teleport.TeleportFilter;
+import com.eternalcode.randomtp.teleport.game.TeleportGame;
 import com.eternalcode.randomtp.teleport.game.TeleportGameController;
 import com.eternalcode.randomtp.teleport.game.TeleportGameRepository;
-import com.eternalcode.randomtp.teleport.TeleportPositionCorrector;
+import com.eternalcode.randomtp.teleport.TeleportCorrector;
 import com.eternalcode.randomtp.teleport.TeleportRange;
 import com.eternalcode.randomtp.teleport.TeleportService;
 import com.eternalcode.randomtp.teleport.game.TeleportType;
@@ -30,7 +34,8 @@ public class EternalRandomTp {
 
     private final TeleportAlgorithm algorithm;
     private final TeleportRange teleportRange;
-    private final TeleportPositionCorrector corrector;
+    private final TeleportCorrector preCorrector;
+    private final TeleportCorrector postCorrector;
     private final TeleportGameRepository teleportRepository;
     private final TeleportTypeRegistry typeRegistry;
 
@@ -51,7 +56,8 @@ public class EternalRandomTp {
 
             TeleportAlgorithm algorithm,
             TeleportRange teleportRange,
-            TeleportPositionCorrector corrector,
+            TeleportCorrector preCorrector,
+            TeleportCorrector postCorrector,
 
             TeleportGameRepository teleportRepository,
             TeleportTypeRegistry typeRegistry,
@@ -65,16 +71,19 @@ public class EternalRandomTp {
         this.dataFolder = dataFolder;
         this.configManager = configManager;
 
+        CdnPluginConfig config = this.configManager.getPluginConfig();
+
         this.algorithm = algorithm;
         this.teleportRange = teleportRange;
-        this.corrector = corrector;
+        this.preCorrector = preCorrector;
+        this.postCorrector = postCorrector;
         this.teleportRepository = teleportRepository;
         this.typeRegistry = typeRegistry;
 
-        this.teleportService = new TeleportService(this.scheduler, this.algorithm, this.teleportRange, this.corrector);
-        this.teleportGameController = new TeleportGameController(this.teleportService, this.teleportRepository, this.typeRegistry, this.game);
+        this.teleportService = new TeleportService(this.algorithm, this.teleportRange, this.preCorrector, this.postCorrector, scheduler, game);
+        this.teleportService.registerFilter(new TeleportFilter.BlackList(() -> config.blocked));
+        this.teleportGameController = new TeleportGameController(this.teleportService, this.teleportRepository, this.typeRegistry, config, this.game);
 
-        CdnPluginConfig config = this.configManager.getPluginConfig();
         this.teleportService.setSettings(config);
 
         this.liteCommands = builder
@@ -89,7 +98,8 @@ public class EternalRandomTp {
                 .parameterBind(Profile.class, new ProfileParameter(profileExtractor))
 
                 .argument(TeleportType.class, new TeleportTypeArg(this.typeRegistry, config))
-                .argument(String.class, "text", argument -> argument)
+                .argument(String.class, new StringArg())
+                .argument(TeleportGame.class, new TeleportGameArg(this.teleportRepository, config))
                 .register();
     }
 
@@ -109,8 +119,8 @@ public class EternalRandomTp {
         return teleportRange;
     }
 
-    public TeleportPositionCorrector getCorrector() {
-        return corrector;
+    public TeleportCorrector getPreCorrector() {
+        return preCorrector;
     }
 
     public TeleportGameRepository getTeleportRepository() {
@@ -154,7 +164,8 @@ public class EternalRandomTp {
 
         private TeleportAlgorithm algorithm;
         private TeleportRange teleportRange;
-        private TeleportPositionCorrector corrector;
+        private TeleportCorrector preCorrector;
+        private TeleportCorrector postCorrector;
         private TeleportGameRepository teleportRepository;
         private TeleportTypeRegistry typeRegistry;
 
@@ -191,8 +202,13 @@ public class EternalRandomTp {
             return this;
         }
 
-        public Builder corrector(TeleportPositionCorrector corrector) {
-            this.corrector = corrector;
+        public Builder preCorrector(TeleportCorrector preCorrector) {
+            this.preCorrector = preCorrector;
+            return this;
+        }
+
+        public Builder postCorrector(TeleportCorrector postCorrector) {
+            this.postCorrector = postCorrector;
             return this;
         }
 
@@ -223,7 +239,7 @@ public class EternalRandomTp {
 
             Valid.notNull(algorithm, "Algorithm cannot be null");
             Valid.notNull(teleportRange, "Teleport range cannot be null");
-            Valid.notNull(corrector, "Position corrector cannot be null");
+            Valid.notNull(preCorrector, "Position corrector cannot be null");
 
             Valid.notNull(builder, "LiteCommandsBuilder cannot be null");
             Valid.notNull(profileExtractor, "Profile extractor cannot be null");
@@ -242,7 +258,7 @@ public class EternalRandomTp {
                 typeRegistry = cdnConfigManager.getPluginConfig();
             }
 
-            return new EternalRandomTp(game, scheduler, dataFolder, cdnConfigManager, algorithm, teleportRange, corrector, teleportRepository, typeRegistry , builder, profileExtractor);
+            return new EternalRandomTp(game, scheduler, dataFolder, cdnConfigManager, algorithm, teleportRange, preCorrector, postCorrector, teleportRepository, typeRegistry , builder, profileExtractor);
         }
 
     }

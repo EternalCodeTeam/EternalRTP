@@ -42,8 +42,8 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     relocate("panda", "com.eternalcode.randomtp.libs.panda")
     relocate("io.papermc.lib", "com.eternalcode.randomtp.libs.io.papermc.lib")
 
-//    copy {
-//        this.from("build/libs/" + archiveFileName.get())
-//        this.into("C:/Users/")
-//    }
+    copy {
+        this.from("build/libs/" + archiveFileName.get())
+        this.into("C:/Users/Rollczi/Desktop/testserver 1.18.1/plugins")
+    }
 }

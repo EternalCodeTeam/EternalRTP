@@ -174,4 +174,16 @@ public class Position {
         return Objects.hash(universe, x, y, z, yaw, pitch);
     }
 
+    @Override
+    public String toString() {
+        return "Position{" +
+                "universe=" + universe +
+                ", x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                ", yaw=" + yaw +
+                ", pitch=" + pitch +
+                '}';
+    }
+
 }

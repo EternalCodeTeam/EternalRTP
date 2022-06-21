@@ -1,6 +1,7 @@
 package com.eternalcode.randomtp.command;
 
 import com.eternalcode.randomtp.config.CdnPluginConfig;
+import com.eternalcode.randomtp.shared.Placeholders;
 import com.eternalcode.randomtp.profile.Profile;
 import com.eternalcode.randomtp.shared.BlockType;
 import com.eternalcode.randomtp.shared.Game;
@@ -52,6 +53,13 @@ public class RandomTpCommand {
 
         Position target = optionalPosition.get();
 
+        Optional<TeleportGame> teleport = this.repository.getTeleport(name);
+
+        if (teleport.isPresent()) {
+            sender.sendMessage(pluginConfig.onTeleportExists);
+            return;
+        }
+
         this.repository.saveTeleport(name, target, type.getName());
         this.game.setBlockType(target, type.getCoreType());
 
@@ -67,8 +75,8 @@ public class RandomTpCommand {
 
     @Execute(route = "delete", required = 1)
     @Permission("eternalcode.command.randomtp.delete")
-    public void delete(LiteSender sender, @Arg(0) @Name("name") String name) {
-        this.repository.deleteTeleport(name);
+    public void delete(LiteSender sender, @Arg(0) TeleportGame teleport) {
+        this.repository.deleteTeleport(teleport.getName());
         sender.sendMessage(pluginConfig.onDelete);
     }
 
@@ -76,18 +84,11 @@ public class RandomTpCommand {
     @Permission("eternalcode.command.randomtp.list")
     public void list(LiteSender sender) {
         for (TeleportGame teleport : this.repository.getTeleports()) {
-            String message = pluginConfig.teleportInfo
-                    .replace("{name}", teleport.getName())
-                    .replace("{type}", teleport.getType())
-                    .replace("{x}", String.valueOf(teleport.getCenter().getBlockX()))
-                    .replace("{y}", String.valueOf(teleport.getCenter().getBlockY()))
-                    .replace("{z}", String.valueOf(teleport.getCenter().getBlockZ()))
-                    .replace("{world}", teleport.getCenter().getUniverse().getName());
+            String message = Placeholders.format(pluginConfig.teleportInfo, teleport);
 
             sender.sendMessage(message);
         }
     }
-
 
     @IgnoreMethod
     private void setButton(Position target, BlockType buttonType, int x, int z) {

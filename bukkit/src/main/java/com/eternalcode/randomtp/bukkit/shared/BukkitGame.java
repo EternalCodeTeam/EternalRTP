@@ -6,6 +6,7 @@ import com.eternalcode.randomtp.shared.BlockType;
 import com.eternalcode.randomtp.shared.Button;
 import com.eternalcode.randomtp.shared.Game;
 import com.eternalcode.randomtp.shared.Position;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -21,6 +22,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 class BukkitGame implements Game {
 
@@ -30,6 +32,32 @@ class BukkitGame implements Game {
         Material type = location.getBlock().getType();
 
         return BukkitProvider.convert(type);
+    }
+
+    @Override
+    public BlockState BlockState(Position pos) {
+        Location location = BukkitProvider.convert(pos);
+
+        return BukkitProvider.convert(location.getBlock());
+    }
+
+    @Override
+    public CompletableFuture<BlockState> getAsyncBlockState(Position pos) {
+        Optional<World> optionalWorld = BukkitProvider.convert(pos.getUniverse());
+
+        if (optionalWorld.isEmpty()) {
+            throw new IllegalStateException();
+        }
+
+        int chunkX = pos.getBlockX() >> 4;
+        int chunkZ = pos.getBlockZ() >> 4;
+
+        int x = chunkX << 4;
+        int z = chunkZ << 4;
+
+        return PaperLib.getChunkAtAsync(optionalWorld.get(), chunkX, chunkZ)
+                .thenApply(chunk -> chunk.getBlock(pos.getBlockX() - x, pos.getBlockY(), pos.getBlockZ() - z))
+                .thenApply(BukkitProvider::convert);
     }
 
     @Override

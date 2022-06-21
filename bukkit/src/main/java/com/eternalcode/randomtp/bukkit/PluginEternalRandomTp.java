@@ -3,11 +3,11 @@ package com.eternalcode.randomtp.bukkit;
 import com.eternalcode.randomtp.EternalRandomTp;
 import com.eternalcode.randomtp.bukkit.shared.BukkitProvider;
 import com.eternalcode.randomtp.bukkit.teleport.BukkitController;
+import com.eternalcode.randomtp.bukkit.teleport.PlayerFriendlyPosition;
 import com.eternalcode.randomtp.bukkit.teleport.WorldBorderRange;
-import com.eternalcode.randomtp.bukkit.teleport.WorldTeleportPositionCorrector;
+import com.eternalcode.randomtp.bukkit.teleport.WorldSafePosition;
 import com.eternalcode.randomtp.teleport.RandomTeleportAlgorithm;
 import dev.rollczi.litecommands.bukkit.LiteBukkitFactory;
-import org.bukkit.block.BlockFace;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PluginEternalRandomTp extends JavaPlugin {
@@ -22,7 +22,8 @@ public class PluginEternalRandomTp extends JavaPlugin {
                 .dataFolder(this.getDataFolder())
 
                 .teleportRange(new WorldBorderRange())
-                .corrector(new WorldTeleportPositionCorrector())
+                .preCorrector(new WorldSafePosition())
+                .postCorrector(new PlayerFriendlyPosition())
                 .algorithm(new RandomTeleportAlgorithm())
 
                 .liteCommandsBuilder(LiteBukkitFactory.builder(this.getServer(), "eternal-randomtp"))

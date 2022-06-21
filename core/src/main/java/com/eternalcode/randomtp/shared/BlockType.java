@@ -2,13 +2,13 @@ package com.eternalcode.randomtp.shared;
 
 import java.util.Objects;
 
-public class BlockType {
+public final class BlockType {
 
     public final static BlockType NONE = BlockType.of("NONE");
 
     private final String name;
 
-    protected BlockType(String name) {
+    private BlockType(String name) {
         this.name = name;
     }
 

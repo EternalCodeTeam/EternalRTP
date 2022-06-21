@@ -9,7 +9,7 @@ import panda.std.Result;
 
 import java.util.Locale;
 
-public class PositionComposer implements Composer<Position>, SimpleSerializer<Position>, SimpleDeserializer<Position> {
+class PositionComposer implements Composer<Position>, SimpleSerializer<Position>, SimpleDeserializer<Position> {
 
     // universe:x:y:z:yaw:pitch
 

@@ -11,7 +11,7 @@ import dev.rollczi.litecommands.valid.ValidationCommandException;
 import java.util.ArrayList;
 import java.util.List;
 
-@ArgumentName("telepor_ttype")
+@ArgumentName("teleport_type")
 public class TeleportTypeArg implements SingleArgumentHandler<TeleportType> {
 
     private final TeleportTypeRegistry registry;

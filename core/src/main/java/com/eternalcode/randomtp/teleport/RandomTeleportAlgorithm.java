@@ -15,10 +15,7 @@ public class RandomTeleportAlgorithm implements TeleportAlgorithm {
         Position min = box.getMin();
         Position max = box.getMax();
 
-        int x = (int) (random.nextDouble() * (max.getX() - min.getX()) + min.getX());
-        int z = (int) (random.nextDouble() * (max.getZ() - min.getZ()) + min.getZ());
-
-        return new Position(universe, x, 0, z);
+        return new Position(universe, random.nextDouble(min.getX(), max.getX()), 0, random.nextDouble(min.getZ(), max.getZ()));
     }
 
 }

@@ -17,7 +17,7 @@ public class WorldBorderRange implements TeleportRange {
                     Position center = BukkitProvider.convert(border.getCenter());
                     double size = border.getSize();
 
-                    return Box.of(center.add(size / 2), center.subtract(size / 2));
+                    return Box.of(center.subtract(size / 2), center.add(size / 2));
                 })
                 .orElse(Box.of(Position.ZERO, Position.ONE));
     }

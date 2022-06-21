@@ -4,6 +4,7 @@ import com.eternalcode.randomtp.profile.Profile;
 import com.eternalcode.randomtp.shared.Position;
 import com.eternalcode.randomtp.shared.Universe;
 import io.papermc.lib.PaperLib;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.block.Block;
@@ -77,6 +78,17 @@ class BukkitPlayerProfile implements Profile {
         }
 
         return PaperLib.teleportAsync(player, BukkitProvider.convert(position));
+    }
+
+    @Override
+    public void sendMessage(String message) {
+        Player player = this.server.getPlayer(this.uuid);
+
+        if (player == null) {
+            return;
+        }
+
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
     }
 
 }

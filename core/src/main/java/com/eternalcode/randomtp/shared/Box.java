@@ -54,4 +54,13 @@ public class Box {
     public int hashCode() {
         return Objects.hash(min, max);
     }
+
+    @Override
+    public String toString() {
+        return "Box{" +
+                "min=" + min +
+                ", max=" + max +
+                '}';
+    }
+
 }
