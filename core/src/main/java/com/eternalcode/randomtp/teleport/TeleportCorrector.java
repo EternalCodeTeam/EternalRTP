@@ -7,8 +7,9 @@ import java.util.concurrent.CompletableFuture;
 @FunctionalInterface
 public interface TeleportCorrector {
 
-    TeleportCorrector NONE = CompletableFuture::completedFuture;
-
     CompletableFuture<Position> correct(Position position);
+
+    TeleportCorrector NONE = CompletableFuture::completedFuture;
+    TeleportCorrector FRIENDLY_POSITION = position -> CompletableFuture.completedFuture(position.add(0.5, 1, 0.5));
 
 }

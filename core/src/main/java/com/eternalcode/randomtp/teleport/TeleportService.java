@@ -6,7 +6,6 @@ import com.eternalcode.randomtp.shared.Game;
 import com.eternalcode.randomtp.shared.Position;
 import com.eternalcode.randomtp.shared.Scheduler;
 import com.eternalcode.randomtp.shared.Universe;
-import panda.std.Blank;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -47,8 +46,8 @@ public class TeleportService {
         this.settings = settings;
     }
 
-    public void teleportProfile(Profile profile, Universe universe, TeleportCallback callback) {
-        this.teleportProfiles(Set.of(profile), universe, callback);
+    public CompletableFuture<Boolean> teleportProfile(Profile profile, Universe universe, TeleportCallback callback) {
+        return this.teleportProfiles(Set.of(profile), universe, callback);
     }
 
     public CompletableFuture<Boolean> teleportProfiles(Collection<Profile> profiles, Universe universe, TeleportCallback callback) {

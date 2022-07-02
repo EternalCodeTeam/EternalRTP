@@ -6,7 +6,6 @@ import com.eternalcode.randomtp.teleport.TeleportSettings;
 import com.eternalcode.randomtp.teleport.game.TeleportType;
 import net.dzikoysk.cdn.entity.Description;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;

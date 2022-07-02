@@ -4,14 +4,19 @@ import com.eternalcode.randomtp.profile.Profile;
 import com.eternalcode.randomtp.shared.Position;
 import com.eternalcode.randomtp.shared.Universe;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestProfile implements Profile {
 
     private final UUID uuid;
     private int teleportCount;
+    private final List<String> messages = new ArrayList<>();
 
     public TestProfile() {
         this.uuid = UUID.randomUUID();
@@ -45,11 +50,19 @@ public class TestProfile implements Profile {
 
     @Override
     public void sendMessage(String message) {
-
+        this.messages.add(message);
     }
 
-    public int getTeleports() {
-        return this.teleportCount;
+    public void assertTeleportCount(int expected) {
+        assertEquals(expected, this.teleportCount);
+    }
+
+    public void assertMessages(String... expected) {
+        assertEquals(expected.length, this.messages.size());
+
+        for (int i = 0; i < expected.length; i++) {
+            assertEquals(expected[i], this.messages.get(i));
+        }
     }
 
 }

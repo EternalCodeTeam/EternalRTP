@@ -48,5 +48,12 @@ public class CdnTeleportGameRepository implements TeleportGameRepository {
         this.update.run();
     }
 
+    public static CdnTeleportGameRepository empty(Runnable runnable) {
+        CdnTeleportGameRepository repository = new CdnTeleportGameRepository(runnable);
+        repository.teleports = Collections.emptyMap();
+
+        return repository;
+    }
+
 
 }

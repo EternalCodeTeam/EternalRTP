@@ -9,19 +9,24 @@ import com.eternalcode.randomtp.shared.Position;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public class GameTest implements Game {
 
+    private final Map<Position, BlockType> blockTypes = new HashMap<>();
+    private final Map<Position, BlockState> buttons = new HashMap<>();
+
     @Override
     public BlockType getBlockType(Position pos) {
-        return BlockType.NONE;
+        return blockTypes.getOrDefault(pos, BlockType.NONE);
     }
 
     @Override
     public BlockState BlockState(Position pos) {
-        return new BlockState(pos, BlockType.NONE);
+        return new BlockState(pos, this.getBlockType(pos));
     }
 
     @Override
@@ -31,16 +36,52 @@ public class GameTest implements Game {
 
     @Override
     public void setBlockType(Position pos, BlockType type) {
+        blockTypes.put(pos, type);
     }
 
     @Override
     public Optional<Button> getButtonIfPresent(Position pos) {
-        return Optional.empty();
+        return buttons.containsKey(pos) ? Optional.of(new TestButton(pos, buttons.get(pos))) : Optional.empty();
     }
 
     @Override
     public Collection<Profile> getNearbyProfiles(Position center, double radius) {
         return Collections.emptyList();
+    }
+
+    public void setButton(BlockState state, BlockState pillar) {
+        buttons.put(state.getPosition(), pillar);
+    }
+
+    private static class TestButton implements Button {
+
+        private final Position position;
+        private final BlockState pillar;
+        private boolean powered = false;
+
+        private TestButton(Position position, BlockState pillar) {
+            this.position = position;
+            this.pillar = pillar;
+        }
+
+        @Override
+        public boolean isPowered() {
+            return this.powered;
+        }
+
+        @Override
+        public void setPowered(boolean powered) {
+            this.powered = powered;
+        }
+
+        @Override
+        public BlockState getPillar() {
+            return pillar;
+        }
+
+        @Override
+        public void setPillar(Position pillar) {}
+
     }
 
 }

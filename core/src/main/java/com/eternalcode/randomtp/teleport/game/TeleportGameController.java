@@ -12,6 +12,7 @@ import com.eternalcode.randomtp.teleport.TeleportService;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 public class TeleportGameController {
 
@@ -29,14 +30,14 @@ public class TeleportGameController {
         this.game = game;
     }
 
-    public void handleRightClick(BlockState blockState, Profile by) {
+    public CompletableFuture<Boolean> handleRightClick(BlockState blockState, Profile by) {
         Position position = blockState.getPosition();
         BlockType blockType = blockState.getBlockType();
 
         Optional<Button> buttonOptional = game.getButtonIfPresent(position);
 
         if (buttonOptional.isEmpty()) {
-            return;
+            return CompletableFuture.completedFuture(false);
         }
 
         Button button = buttonOptional.get();
@@ -68,7 +69,7 @@ public class TeleportGameController {
             if (type.isGroup()) {
                 Collection<Profile> profiles = game.getNearbyProfiles(teleport.getCenter(), type.getRadius());
 
-                this.teleportService.teleportProfiles(profiles, type.getUniverse(), result -> {
+                return this.teleportService.teleportProfiles(profiles, type.getUniverse(), result -> {
                     if (result.isFailure()) {
                         return;
                     }
@@ -85,14 +86,14 @@ public class TeleportGameController {
                         by.sendMessage(config.onTeleportFail);
                     }
                 });
-                return;
             }
 
-            this.teleportService.teleportProfile(by, type.getUniverse(), result -> {
+            return this.teleportService.teleportProfile(by, type.getUniverse(), result -> {
                 by.sendMessage(result.isSuccess() ? Placeholders.format(config.onTeleport, result.getTo()) : config.onTeleportFail);
             });
-            return;
         }
+
+        return CompletableFuture.completedFuture(false);
     }
 
 }
