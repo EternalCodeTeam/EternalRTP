@@ -33,5 +33,5 @@ jobs:
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.0.0
         with:
-          name: 'Successfully build EternalCore JDK${{ matrix.jdk }}'
+          name: 'Successfully build EternalRTP JDK${{ matrix.jdk }}'
           path: bukkit/build/libs/EternalRTP*.jar
