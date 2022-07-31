@@ -29,7 +29,7 @@ tasks.withType<JavaCompile> {
 }
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
-    archiveFileName.set("EternalTp v${project.version} (MC 1.8.8-1.18).jar")
+    archiveFileName.set("EternalRTP v${project.version} (MC 1.8.8-1.18).jar")
 
     exclude("org/intellij/lang/annotations/**")
     exclude("org/jetbrains/annotations/**")
@@ -41,9 +41,4 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     relocate("org.panda_lang", "com.eternalcode.randomtp.libs.org.panda_lang")
     relocate("panda", "com.eternalcode.randomtp.libs.panda")
     relocate("io.papermc.lib", "com.eternalcode.randomtp.libs.io.papermc.lib")
-
-    copy {
-        this.from("build/libs/" + archiveFileName.get())
-        this.into("C:/Users/Rollczi/Desktop/testserver 1.18.1/plugins")
-    }
 }
