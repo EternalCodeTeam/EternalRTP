@@ -5,7 +5,7 @@ plugins {
 dependencies {
     implementation(project(":core"))
 
-    compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.19.1-R0.1-SNAPSHOT")
     implementation("io.papermc:paperlib:1.0.7")
     implementation("dev.rollczi.litecommands:bukkit:1.9.0")
 
