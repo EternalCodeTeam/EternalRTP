@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     id("net.minecrell.plugin-yml.bukkit") version "0.5.2"
 }
@@ -28,17 +30,27 @@ tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }
 
-tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+tasks.withType<ShadowJar> {
     archiveFileName.set("EternalRTP v${project.version} (MC 1.8.8-1.18).jar")
 
-    exclude("org/intellij/lang/annotations/**")
-    exclude("org/jetbrains/annotations/**")
-    exclude("javax/**")
-    exclude("META-INF/**")
+    exclude(
+        "org/intellij/lang/annotations/**",
+        "org/jetbrains/annotations/**",
+        "javax/**",
+        "META-INF/**"
+    )
 
-    relocate("net.dzikoysk", "com.eternalcode.randomtp.libs.net.dzikoysk")
-    relocate("dev.rollczi", "com.eternalcode.randomtp.libs.dev.rollczi")
-    relocate("org.panda_lang", "com.eternalcode.randomtp.libs.org.panda_lang")
-    relocate("panda", "com.eternalcode.randomtp.libs.panda")
-    relocate("io.papermc.lib", "com.eternalcode.randomtp.libs.io.papermc.lib")
+    mergeServiceFiles()
+    minimize()
+
+    val prefix = "com.eternalcode.randomtp.libs"
+    listOf(
+        "net.dzikoysk",
+        "dev.rollczi",
+        "org.panda_lang",
+        "panda",
+        "io.papermc.lib"
+    ).forEach { pack ->
+        relocate(pack, "$prefix.$pack")
+    }
 }
