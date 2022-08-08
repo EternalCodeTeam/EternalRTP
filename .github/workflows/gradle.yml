@@ -31,7 +31,7 @@ jobs:
       - name: Build the Jar
         run: './gradlew bukkit:shadowJar'
       - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3.0.0
+        uses: actions/upload-artifact@v3.1.0
         with:
           name: 'Successfully build EternalRTP JDK${{ matrix.jdk }}'
           path: bukkit/build/libs/EternalRTP*.jar
