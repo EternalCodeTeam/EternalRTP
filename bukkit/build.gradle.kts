@@ -11,7 +11,7 @@ dependencies {
     implementation("io.papermc:paperlib:1.0.7")
     implementation("dev.rollczi.litecommands:bukkit:1.9.0")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
 }
 
 bukkit {
