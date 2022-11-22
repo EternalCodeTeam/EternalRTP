@@ -1,15 +1,17 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
-    id("net.minecrell.plugin-yml.bukkit") version "0.5.1"
+    id("net.minecrell.plugin-yml.bukkit") version "0.5.2"
 }
 
 dependencies {
     implementation(project(":core"))
 
-    compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.19.1-R0.1-SNAPSHOT")
     implementation("io.papermc:paperlib:1.0.7")
     implementation("dev.rollczi.litecommands:bukkit:2.7.0")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
 }
 
 bukkit {
@@ -28,22 +30,27 @@ tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }
 
-tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
-    archiveFileName.set("EternalTp v${project.version} (MC 1.8.8-1.18).jar")
+tasks.withType<ShadowJar> {
+    archiveFileName.set("EternalRTP v${project.version} (MC 1.8.8-1.18).jar")
 
-    exclude("org/intellij/lang/annotations/**")
-    exclude("org/jetbrains/annotations/**")
-    exclude("javax/**")
-    exclude("META-INF/**")
+    exclude(
+        "org/intellij/lang/annotations/**",
+        "org/jetbrains/annotations/**",
+        "javax/**",
+        "META-INF/**"
+    )
 
-    relocate("net.dzikoysk", "com.eternalcode.randomtp.libs.net.dzikoysk")
-    relocate("dev.rollczi", "com.eternalcode.randomtp.libs.dev.rollczi")
-    relocate("org.panda_lang", "com.eternalcode.randomtp.libs.org.panda_lang")
-    relocate("panda", "com.eternalcode.randomtp.libs.panda")
-    relocate("io.papermc.lib", "com.eternalcode.randomtp.libs.io.papermc.lib")
+    mergeServiceFiles()
+    minimize()
 
-    copy {
-        this.from("build/libs/" + archiveFileName.get())
-        this.into("C:/Users/Rollczi/Desktop/testserver 1.18.1/plugins")
+    val prefix = "com.eternalcode.randomtp.libs"
+    listOf(
+        "net.dzikoysk",
+        "dev.rollczi",
+        "org.panda_lang",
+        "panda",
+        "io.papermc.lib"
+    ).forEach { pack ->
+        relocate(pack, "$prefix.$pack")
     }
 }
