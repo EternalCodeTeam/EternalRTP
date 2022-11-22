@@ -1,5 +1,5 @@
 dependencies {
-    implementation("dev.rollczi.litecommands:core:1.9.0")
+    implementation("dev.rollczi.litecommands:core:2.7.0")
     implementation("net.dzikoysk:cdn:1.14.1")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
