@@ -10,17 +10,18 @@ import com.eternalcode.randomtp.teleport.TeleportService;
 import com.eternalcode.randomtp.teleport.game.TeleportGame;
 import com.eternalcode.randomtp.teleport.game.TeleportGameRepository;
 import com.eternalcode.randomtp.teleport.game.TeleportType;
-import dev.rollczi.litecommands.annotations.Arg;
-import dev.rollczi.litecommands.annotations.Execute;
-import dev.rollczi.litecommands.annotations.IgnoreMethod;
-import dev.rollczi.litecommands.annotations.Name;
-import dev.rollczi.litecommands.annotations.Permission;
-import dev.rollczi.litecommands.annotations.Section;
+import dev.rollczi.litecommands.argument.Arg;
+import dev.rollczi.litecommands.argument.Name;
+import dev.rollczi.litecommands.command.execute.Execute;
+import dev.rollczi.litecommands.command.permission.Permission;
+import dev.rollczi.litecommands.command.route.Route;
 import dev.rollczi.litecommands.platform.LiteSender;
+import dev.rollczi.litecommands.suggestion.Suggest;
+import panda.std.Option;
 
 import java.util.Optional;
 
-@Section(route = "randomtp", aliases = { "rtp" })
+@Route(name = "randomtp", aliases = { "rtp" })
 @Permission("eternalcode.command.randomtp")
 public class RandomTpCommand {
 
@@ -43,7 +44,14 @@ public class RandomTpCommand {
 
     @Execute(route = "create", required = 2)
     @Permission("eternalcode.command.randomtp.create")
-    public void set(LiteSender sender, Profile profile, @Arg(0) @Name("name") String name, @Arg(1) TeleportType type) {
+    public void set(
+            LiteSender sender,
+            Profile profile,
+            @Arg @Name("name") @Suggest({ "nazwa_teleportu", "siema" })
+            String name,
+            @Arg
+            TeleportType type
+    ) {
         Optional<Position> optionalPosition = profile.getTargetPosition();
 
         if (optionalPosition.isEmpty()) {
@@ -53,7 +61,7 @@ public class RandomTpCommand {
 
         Position target = optionalPosition.get();
 
-        Optional<TeleportGame> teleport = this.repository.getTeleport(name);
+        Option<TeleportGame> teleport = this.repository.getTeleport(name);
 
         if (teleport.isPresent()) {
             sender.sendMessage(pluginConfig.onTeleportExists);
@@ -61,6 +69,8 @@ public class RandomTpCommand {
         }
 
         this.repository.saveTeleport(name, target, type.getName());
+        // TODO: Move to other class {START}
+        // Add e.g. TeleportGameService and move this code there
         this.game.setBlockType(target, type.getCoreType());
 
         BlockType buttonType = type.getButtonBlock();
@@ -69,13 +79,14 @@ public class RandomTpCommand {
         this.setButton(target, buttonType, 1, 0);
         this.setButton(target, buttonType, 0, -1);
         this.setButton(target, buttonType, 0, 1);
+        // TODO: Move to other class {END}
 
         sender.sendMessage(pluginConfig.onCreate);
     }
 
     @Execute(route = "delete", required = 1)
     @Permission("eternalcode.command.randomtp.delete")
-    public void delete(LiteSender sender, @Arg(0) TeleportGame teleport) {
+    public void delete(LiteSender sender, @Arg TeleportGame teleport) {
         this.repository.deleteTeleport(teleport.getName());
         sender.sendMessage(pluginConfig.onDelete);
     }
@@ -90,7 +101,7 @@ public class RandomTpCommand {
         }
     }
 
-    @IgnoreMethod
+    // TODO: Move to other class
     private void setButton(Position target, BlockType buttonType, int x, int z) {
         this.game.setBlockType(target.add(x, 0, z), buttonType);
         this.game.getButtonIfPresent(target.add(x, 0, z)).ifPresent(button -> button.setPillar(target));

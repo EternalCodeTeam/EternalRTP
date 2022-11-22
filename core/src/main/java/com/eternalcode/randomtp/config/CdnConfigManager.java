@@ -55,14 +55,14 @@ public class CdnConfigManager {
     private void loadAndRender(String name, Object object) {
         Resource resource = Source.of(this.dataFolder, name);
 
-        this.cdn.load(resource, object).orElseThrow(ex -> new RuntimeException("Failed to load config " + name, ex));
-        this.cdn.render(object, resource).orElseThrow(ex -> new RuntimeException("Failed to render config " + name, ex));
+        this.cdn.load(resource, object).orThrow(ex -> new RuntimeException("Failed to load config " + name, ex));
+        this.cdn.render(object, resource).orThrow(ex -> new RuntimeException("Failed to render config " + name, ex));
     }
 
     private void render(String name, Object object) {
         Resource resource = Source.of(this.dataFolder, name);
 
-        this.cdn.render(object, resource).orElseThrow(ex -> new RuntimeException("Failed to render config " + name, ex));
+        this.cdn.render(object, resource).orThrow(ex -> new RuntimeException("Failed to render config " + name, ex));
     }
 
 }

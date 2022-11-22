@@ -5,11 +5,11 @@ import com.eternalcode.randomtp.teleport.game.TeleportTypeRegistry;
 import com.eternalcode.randomtp.teleport.TeleportSettings;
 import com.eternalcode.randomtp.teleport.game.TeleportType;
 import net.dzikoysk.cdn.entity.Description;
+import panda.std.Option;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class CdnPluginConfig implements TeleportSettings, TeleportTypeRegistry {
 
@@ -48,8 +48,8 @@ public class CdnPluginConfig implements TeleportSettings, TeleportTypeRegistry {
     }
 
     @Override
-    public Optional<TeleportType> getType(String name) {
-        return Optional.ofNullable(this.types.get(name));
+    public Option<TeleportType> getType(String name) {
+        return Option.of(this.types.get(name));
     }
 
 }

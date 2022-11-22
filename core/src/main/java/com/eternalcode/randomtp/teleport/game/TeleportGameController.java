@@ -9,6 +9,7 @@ import com.eternalcode.randomtp.shared.Game;
 import com.eternalcode.randomtp.shared.Placeholders;
 import com.eternalcode.randomtp.shared.Position;
 import com.eternalcode.randomtp.teleport.TeleportService;
+import panda.std.Option;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -50,7 +51,7 @@ public class TeleportGameController {
                 continue;
             }
 
-            Optional<TeleportType> typeOptional = this.registry.getType(teleport.getType());
+            Option<TeleportType> typeOptional = this.registry.getType(teleport.getType());
 
             if (typeOptional.isEmpty()) {
                 continue;

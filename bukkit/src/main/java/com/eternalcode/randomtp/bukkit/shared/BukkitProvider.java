@@ -12,12 +12,17 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import panda.std.Option;
 
 import java.util.Optional;
 
-public class BukkitProvider {
+public final class BukkitProvider {
+
+    private BukkitProvider() {
+    }
 
     public static Universe convert(World world) {
         if (world == null) {
@@ -43,12 +48,12 @@ public class BukkitProvider {
         return new Location(convert(position.getUniverse()).orElse(null), position.getX(), position.getY(), position.getZ(), position.getYaw(), position.getPitch());
     }
 
-    public static Optional<Profile> convert(Object sender) {
+    public static Option<Profile> convert(CommandSender sender) {
         if (sender instanceof Player player) {
-            return Optional.of(convert(player));
+            return Option.of(convert(player));
         }
 
-        return Optional.empty();
+        return Option.none();
     }
 
     public static Profile convert(Player player) {
