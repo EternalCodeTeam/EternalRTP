@@ -1,8 +1,7 @@
 package com.eternalcode.randomtp;
 
-import com.eternalcode.randomtp.command.ProfileParameter;
+import com.eternalcode.randomtp.command.ProfileContextual;
 import com.eternalcode.randomtp.command.RandomTpCommand;
-import com.eternalcode.randomtp.command.StringArg;
 import com.eternalcode.randomtp.command.TeleportGameArg;
 import com.eternalcode.randomtp.command.TeleportTypeArg;
 import com.eternalcode.randomtp.config.CdnConfigManager;
@@ -23,11 +22,10 @@ import com.eternalcode.randomtp.teleport.game.TeleportType;
 import com.eternalcode.randomtp.teleport.game.TeleportTypeRegistry;
 import dev.rollczi.litecommands.LiteCommands;
 import dev.rollczi.litecommands.LiteCommandsBuilder;
-import dev.rollczi.litecommands.platform.LitePlatformManager;
 
 import java.io.File;
 
-public class EternalRandomTp {
+public class EternalRandomTp<SENDER> {
 
     private final Scheduler scheduler;
     private final Game game;
@@ -45,9 +43,9 @@ public class EternalRandomTp {
     private final File dataFolder;
     private final CdnConfigManager configManager;
 
-    private final LiteCommands liteCommands;
+    private final LiteCommands<SENDER> liteCommands;
 
-    private  <S, P extends LitePlatformManager<S>> EternalRandomTp(
+    private EternalRandomTp(
             Game game,
             Scheduler scheduler,
 
@@ -62,8 +60,8 @@ public class EternalRandomTp {
             TeleportGameRepository teleportRepository,
             TeleportTypeRegistry typeRegistry,
 
-            LiteCommandsBuilder<S, P> builder,
-            ProfileParameter.Extractor profileExtractor
+            LiteCommandsBuilder<SENDER> builder,
+            ProfileContextual.Extractor<SENDER> profileExtractor
     ) {
         this.game = game;
         this.scheduler = scheduler;
@@ -94,11 +92,10 @@ public class EternalRandomTp {
                 .typeBind(CdnPluginConfig.class, () -> config)
                 .typeBind(Game.class, () -> this.game)
 
-                .invalidUseMessage((invocation, useScheme) -> config.invalidUsage.replace("{command}", useScheme))
-                .parameterBind(Profile.class, new ProfileParameter(profileExtractor))
+                .invalidUsageHandler((sender, invocation, schematic) -> invocation.sender().sendMessage(config.invalidUsage.replace("{command}", schematic.first())))
+                .contextualBind(Profile.class, new ProfileContextual<>(profileExtractor))
 
                 .argument(TeleportType.class, new TeleportTypeArg(this.typeRegistry, config))
-                .argument(String.class, new StringArg())
                 .argument(TeleportGame.class, new TeleportGameArg(this.teleportRepository, config))
                 .register();
     }
@@ -147,15 +144,15 @@ public class EternalRandomTp {
         return configManager;
     }
 
-    public LiteCommands getLiteCommands() {
+    public LiteCommands<SENDER> getLiteCommands() {
         return liteCommands;
     }
 
-    public static Builder builder() {
-        return new Builder();
+    public static <SENDER> Builder<SENDER> builder() {
+        return new Builder<>();
     }
 
-    public static class Builder {
+    public static class Builder<SENDER> {
 
         private Game game;
         private Scheduler scheduler;
@@ -169,70 +166,70 @@ public class EternalRandomTp {
         private TeleportGameRepository teleportRepository;
         private TeleportTypeRegistry typeRegistry;
 
-        private LiteCommandsBuilder<?, ?> builder;
-        private ProfileParameter.Extractor profileExtractor;
+        private LiteCommandsBuilder<SENDER> builder;
+        private ProfileContextual.Extractor<SENDER> profileExtractor;
 
-        public Builder game(Game game) {
+        public Builder<SENDER> game(Game game) {
             this.game = game;
             return this;
         }
 
-        public Builder scheduler(Scheduler scheduler) {
+        public Builder<SENDER> scheduler(Scheduler scheduler) {
             this.scheduler = scheduler;
             return this;
         }
 
-        public Builder dataFolder(File dataFolder) {
+        public Builder<SENDER> dataFolder(File dataFolder) {
             this.dataFolder = dataFolder;
             return this;
         }
 
-        public Builder cdnConfigManager(CdnConfigManager cdnConfigManager) {
+        public Builder<SENDER> cdnConfigManager(CdnConfigManager cdnConfigManager) {
             this.cdnConfigManager = cdnConfigManager;
             return this;
         }
 
-        public Builder algorithm(TeleportAlgorithm algorithm) {
+        public Builder<SENDER> algorithm(TeleportAlgorithm algorithm) {
             this.algorithm = algorithm;
             return this;
         }
 
-        public Builder teleportRange(TeleportRange teleportRange) {
+        public Builder<SENDER> teleportRange(TeleportRange teleportRange) {
             this.teleportRange = teleportRange;
             return this;
         }
 
-        public Builder preCorrector(TeleportCorrector preCorrector) {
+        public Builder<SENDER> preCorrector(TeleportCorrector preCorrector) {
             this.preCorrector = preCorrector;
             return this;
         }
 
-        public Builder postCorrector(TeleportCorrector postCorrector) {
+        public Builder<SENDER> postCorrector(TeleportCorrector postCorrector) {
             this.postCorrector = postCorrector;
             return this;
         }
 
-        public Builder teleportRepository(TeleportGameRepository teleportRepository) {
+        public Builder<SENDER> teleportRepository(TeleportGameRepository teleportRepository) {
             this.teleportRepository = teleportRepository;
             return this;
         }
 
-        public Builder typeRegistry(TeleportTypeRegistry typeRegistry) {
+        public Builder<SENDER> typeRegistry(TeleportTypeRegistry typeRegistry) {
             this.typeRegistry = typeRegistry;
             return this;
         }
 
-        public Builder liteCommandsBuilder(LiteCommandsBuilder<?, ?> builder) {
+        public Builder<SENDER> liteCommandsBuilder(LiteCommandsBuilder<SENDER> builder) {
             this.builder = builder;
             return this;
         }
 
-        public Builder profileExtractor(ProfileParameter.Extractor profileExtractor) {
+        public Builder<SENDER> profileExtractor(ProfileContextual.Extractor<SENDER> profileExtractor) {
             this.profileExtractor = profileExtractor;
             return this;
         }
 
-        public EternalRandomTp build() {
+        public EternalRandomTp<SENDER> build() {
             Valid.notNull(game, "Game cannot be null");
             Valid.notNull(scheduler, "Scheduler cannot be null");
             Valid.notNull(dataFolder, "Data folder cannot be null");
@@ -258,7 +255,7 @@ public class EternalRandomTp {
                 typeRegistry = cdnConfigManager.getPluginConfig();
             }
 
-            return new EternalRandomTp(game, scheduler, dataFolder, cdnConfigManager, algorithm, teleportRange, preCorrector, postCorrector, teleportRepository, typeRegistry , builder, profileExtractor);
+            return new EternalRandomTp<>(game, scheduler, dataFolder, cdnConfigManager, algorithm, teleportRange, preCorrector, postCorrector, teleportRepository, typeRegistry , builder, profileExtractor);
         }
 
     }
