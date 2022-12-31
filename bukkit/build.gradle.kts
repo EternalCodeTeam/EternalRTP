@@ -8,7 +8,7 @@ dependencies {
     implementation(project(":core"))
 
     compileOnly("org.spigotmc:spigot-api:1.19.1-R0.1-SNAPSHOT")
-    implementation("io.papermc:paperlib:1.0.7")
+    implementation("io.papermc:paperlib:1.0.8")
     implementation("dev.rollczi.litecommands:bukkit:2.7.0")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
