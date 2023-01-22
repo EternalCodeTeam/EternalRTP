@@ -1,3 +1,7 @@
+plugins {
+    id("com.eternalcode.java-conventions")
+}
+
 dependencies {
     implementation("dev.rollczi.litecommands:core:2.7.0")
     implementation("net.dzikoysk:cdn:1.14.1")
