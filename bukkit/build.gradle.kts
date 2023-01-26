@@ -4,6 +4,7 @@ plugins {
     id("com.eternalcode.java-conventions")
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("net.minecrell.plugin-yml.bukkit") version "0.5.2"
+    id("xyz.jpenilla.run-paper") version "2.0.1"
 }
 
 dependencies {
@@ -54,5 +55,11 @@ tasks.withType<ShadowJar> {
         "io.papermc.lib"
     ).forEach { pack ->
         relocate(pack, "$prefix.$pack")
+    }
+}
+
+tasks {
+    runServer {
+        minecraftVersion("1.19.3")
     }
 }
