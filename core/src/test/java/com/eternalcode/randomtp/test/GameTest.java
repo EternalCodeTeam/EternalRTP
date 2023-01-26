@@ -21,7 +21,7 @@ public class GameTest implements Game {
 
     @Override
     public BlockType getBlockType(Position pos) {
-        return blockTypes.getOrDefault(pos, BlockType.NONE);
+        return this.blockTypes.getOrDefault(pos, BlockType.NONE);
     }
 
     @Override
@@ -36,12 +36,12 @@ public class GameTest implements Game {
 
     @Override
     public void setBlockType(Position pos, BlockType type) {
-        blockTypes.put(pos, type);
+        this.blockTypes.put(pos, type);
     }
 
     @Override
     public Optional<Button> getButtonIfPresent(Position pos) {
-        return buttons.containsKey(pos) ? Optional.of(new TestButton(pos, buttons.get(pos))) : Optional.empty();
+        return this.buttons.containsKey(pos) ? Optional.of(new TestButton(pos, this.buttons.get(pos))) : Optional.empty();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class GameTest implements Game {
     }
 
     public void setButton(BlockState state, BlockState pillar) {
-        buttons.put(state.getPosition(), pillar);
+        this.buttons.put(state.getPosition(), pillar);
     }
 
     private static class TestButton implements Button {
@@ -76,11 +76,12 @@ public class GameTest implements Game {
 
         @Override
         public BlockState getPillar() {
-            return pillar;
+            return this.pillar;
         }
 
         @Override
-        public void setPillar(Position pillar) {}
+        public void setPillar(Position pillar) {
+        }
 
     }
 

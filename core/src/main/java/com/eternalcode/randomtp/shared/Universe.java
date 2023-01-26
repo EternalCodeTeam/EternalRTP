@@ -35,18 +35,20 @@ public class Universe {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
+        if (this == obj) {
+            return true;
+        }
 
         if (!(obj instanceof Universe universe)) {
             return false;
         }
 
-        return name.equals(universe.name);
+        return this.name.equals(universe.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(this.name);
     }
 
 }

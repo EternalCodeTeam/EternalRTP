@@ -13,14 +13,14 @@ public class PositionComposerTest {
 
     @Test
     public void serializeTest() {
-        Result<String, Exception> result = composer.serialize(new Position(Universe.of("world"), -1.5D, 2.0D, 3.4, 2.7F, 1.4F));
+        Result<String, Exception> result = this.composer.serialize(new Position(Universe.of("world"), -1.5D, 2.0D, 3.4, 2.7F, 1.4F));
 
         assertEquals("world:-1.500000:2.000000:3.400000:2.700000:1.400000", result.get());
     }
 
     @Test
     public void test() {
-        Result<Position, Exception> deserialize = composer.deserialize("world:-1.500000:2.000000:3.400000:2.700000:1.400000");
+        Result<Position, Exception> deserialize = this.composer.deserialize("world:-1.500000:2.000000:3.400000:2.700000:1.400000");
         Position position = deserialize.get();
 
         assertEquals("world", position.getUniverse().getName());

@@ -35,7 +35,7 @@ public class TeleportGameController {
         Position position = blockState.getPosition();
         BlockType blockType = blockState.getBlockType();
 
-        Optional<Button> buttonOptional = game.getButtonIfPresent(position);
+        Optional<Button> buttonOptional = this.game.getButtonIfPresent(position);
 
         if (buttonOptional.isEmpty()) {
             return CompletableFuture.completedFuture(false);
@@ -63,19 +63,19 @@ public class TeleportGameController {
                 continue;
             }
 
-            if (type.requiredPlate() && !game.getBlockType(by.getPosition()).equals(type.getPlateBlock())) {
+            if (type.requiredPlate() && !this.game.getBlockType(by.getPosition()).equals(type.getPlateBlock())) {
                 continue;
             }
 
             if (type.isGroup()) {
-                Collection<Profile> profiles = game.getNearbyProfiles(teleport.getCenter(), type.getRadius());
+                Collection<Profile> profiles = this.game.getNearbyProfiles(teleport.getCenter(), type.getRadius());
 
                 return this.teleportService.teleportProfiles(profiles, type.getUniverse(), result -> {
                     if (result.isFailure()) {
                         return;
                     }
 
-                    String message = Placeholders.format(config.onGroupTeleport, result.getTo());
+                    String message = Placeholders.format(this.config.onGroupTeleport, result.getTo());
 
                     result.getProfile().sendMessage(message);
                 }).whenComplete((result, throwable) -> {
@@ -84,13 +84,13 @@ public class TeleportGameController {
                     }
 
                     if (throwable != null || !result) {
-                        by.sendMessage(config.onTeleportFail);
+                        by.sendMessage(this.config.onTeleportFail);
                     }
                 });
             }
 
             return this.teleportService.teleportProfile(by, type.getUniverse(), result -> {
-                by.sendMessage(result.isSuccess() ? Placeholders.format(config.onTeleport, result.getTo()) : config.onTeleportFail);
+                by.sendMessage(result.isSuccess() ? Placeholders.format(this.config.onTeleport, result.getTo()) : this.config.onTeleportFail);
             });
         }
 

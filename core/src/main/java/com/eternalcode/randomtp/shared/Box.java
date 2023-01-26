@@ -13,17 +13,17 @@ public class Box {
     }
 
     public Position getMin() {
-        return min;
+        return this.min;
     }
 
     public Position getMax() {
-        return max;
+        return this.max;
     }
 
     public boolean contains(Position pos) {
-        return pos.getX() >= min.getX() && pos.getX() <= max.getX()
-                && pos.getY() >= min.getY() && pos.getY() <= max.getY()
-                && pos.getZ() >= min.getZ() && pos.getZ() <= max.getZ();
+        return pos.getX() >= this.min.getX() && pos.getX() <= this.max.getX()
+                && pos.getY() >= this.min.getY() && pos.getY() <= this.max.getY()
+                && pos.getZ() >= this.min.getZ() && pos.getZ() <= this.max.getZ();
     }
 
     public static Box of(Position min, Position max) {
@@ -47,19 +47,19 @@ public class Box {
             return false;
         }
 
-        return min.equals(box.min) && max.equals(box.max);
+        return this.min.equals(box.min) && this.max.equals(box.max);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(min, max);
+        return Objects.hash(this.min, this.max);
     }
 
     @Override
     public String toString() {
         return "Box{" +
-                "min=" + min +
-                ", max=" + max +
+                "min=" + this.min +
+                ", max=" + this.max +
                 '}';
     }
 

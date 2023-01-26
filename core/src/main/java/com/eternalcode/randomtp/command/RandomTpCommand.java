@@ -1,10 +1,10 @@
 package com.eternalcode.randomtp.command;
 
 import com.eternalcode.randomtp.config.CdnPluginConfig;
-import com.eternalcode.randomtp.shared.Placeholders;
 import com.eternalcode.randomtp.profile.Profile;
 import com.eternalcode.randomtp.shared.BlockType;
 import com.eternalcode.randomtp.shared.Game;
+import com.eternalcode.randomtp.shared.Placeholders;
 import com.eternalcode.randomtp.shared.Position;
 import com.eternalcode.randomtp.teleport.TeleportService;
 import com.eternalcode.randomtp.teleport.game.TeleportGame;
@@ -39,7 +39,7 @@ public class RandomTpCommand {
 
     @Execute
     public void execute(LiteSender sender, Profile profile) {
-        this.teleportService.teleportProfile(profile, profile.getUniverse(), result -> sender.sendMessage(result.isSuccess() ? pluginConfig.onTeleport : pluginConfig.onTeleportFail));
+        this.teleportService.teleportProfile(profile, profile.getUniverse(), result -> sender.sendMessage(result.isSuccess() ? this.pluginConfig.onTeleport : this.pluginConfig.onTeleportFail));
     }
 
     @Execute(route = "create", required = 2)
@@ -55,7 +55,7 @@ public class RandomTpCommand {
         Optional<Position> optionalPosition = profile.getTargetPosition();
 
         if (optionalPosition.isEmpty()) {
-            sender.sendMessage(pluginConfig.onNoPosition);
+            sender.sendMessage(this.pluginConfig.onNoPosition);
             return;
         }
 
@@ -64,7 +64,7 @@ public class RandomTpCommand {
         Option<TeleportGame> teleport = this.repository.getTeleport(name);
 
         if (teleport.isPresent()) {
-            sender.sendMessage(pluginConfig.onTeleportExists);
+            sender.sendMessage(this.pluginConfig.onTeleportExists);
             return;
         }
 
@@ -81,21 +81,21 @@ public class RandomTpCommand {
         this.setButton(target, buttonType, 0, 1);
         // TODO: Move to other class {END}
 
-        sender.sendMessage(pluginConfig.onCreate);
+        sender.sendMessage(this.pluginConfig.onCreate);
     }
 
     @Execute(route = "delete", required = 1)
     @Permission("eternalcode.command.randomtp.delete")
     public void delete(LiteSender sender, @Arg TeleportGame teleport) {
         this.repository.deleteTeleport(teleport.getName());
-        sender.sendMessage(pluginConfig.onDelete);
+        sender.sendMessage(this.pluginConfig.onDelete);
     }
 
     @Execute(route = "list")
     @Permission("eternalcode.command.randomtp.list")
     public void list(LiteSender sender) {
         for (TeleportGame teleport : this.repository.getTeleports()) {
-            String message = Placeholders.format(pluginConfig.teleportInfo, teleport);
+            String message = Placeholders.format(this.pluginConfig.teleportInfo, teleport);
 
             sender.sendMessage(message);
         }

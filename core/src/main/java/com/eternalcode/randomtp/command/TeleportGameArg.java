@@ -25,12 +25,12 @@ public class TeleportGameArg implements OneArgument<TeleportGame> {
     @Override
     public Result<TeleportGame, ?> parse(LiteInvocation invocation, String argument) {
         return this.repository.getTeleport(argument)
-                .toResult(pluginConfig.teleportTypeNotExist);
+                .toResult(this.pluginConfig.teleportTypeNotExist);
     }
 
     @Override
     public List<Suggestion> suggest(LiteInvocation invocation) {
-        return repository.getTeleports().stream()
+        return this.repository.getTeleports().stream()
                 .map(TeleportGame::getName)
                 .map(Suggestion::of)
                 .toList();

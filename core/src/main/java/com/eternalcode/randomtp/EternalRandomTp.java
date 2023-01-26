@@ -11,13 +11,13 @@ import com.eternalcode.randomtp.shared.Game;
 import com.eternalcode.randomtp.shared.Scheduler;
 import com.eternalcode.randomtp.shared.Valid;
 import com.eternalcode.randomtp.teleport.TeleportAlgorithm;
+import com.eternalcode.randomtp.teleport.TeleportCorrector;
 import com.eternalcode.randomtp.teleport.TeleportFilter;
+import com.eternalcode.randomtp.teleport.TeleportRange;
+import com.eternalcode.randomtp.teleport.TeleportService;
 import com.eternalcode.randomtp.teleport.game.TeleportGame;
 import com.eternalcode.randomtp.teleport.game.TeleportGameController;
 import com.eternalcode.randomtp.teleport.game.TeleportGameRepository;
-import com.eternalcode.randomtp.teleport.TeleportCorrector;
-import com.eternalcode.randomtp.teleport.TeleportRange;
-import com.eternalcode.randomtp.teleport.TeleportService;
 import com.eternalcode.randomtp.teleport.game.TeleportType;
 import com.eternalcode.randomtp.teleport.game.TeleportTypeRegistry;
 import dev.rollczi.litecommands.LiteCommands;
@@ -101,51 +101,51 @@ public class EternalRandomTp<SENDER> {
     }
 
     public Scheduler getScheduler() {
-        return scheduler;
+        return this.scheduler;
     }
 
     public Game getGame() {
-        return game;
+        return this.game;
     }
 
     public TeleportAlgorithm getAlgorithm() {
-        return algorithm;
+        return this.algorithm;
     }
 
     public TeleportRange getTeleportRange() {
-        return teleportRange;
+        return this.teleportRange;
     }
 
     public TeleportCorrector getPreCorrector() {
-        return preCorrector;
+        return this.preCorrector;
     }
 
     public TeleportGameRepository getTeleportRepository() {
-        return teleportRepository;
+        return this.teleportRepository;
     }
 
     public TeleportTypeRegistry getTypeRegistry() {
-        return typeRegistry;
+        return this.typeRegistry;
     }
 
     public TeleportService getTeleportService() {
-        return teleportService;
+        return this.teleportService;
     }
 
     public TeleportGameController getTeleportGameController() {
-        return teleportGameController;
+        return this.teleportGameController;
     }
 
     public File getDataFolder() {
-        return dataFolder;
+        return this.dataFolder;
     }
 
     public CdnConfigManager getConfigManager() {
-        return configManager;
+        return this.configManager;
     }
 
     public LiteCommands<SENDER> getLiteCommands() {
-        return liteCommands;
+        return this.liteCommands;
     }
 
     public static <SENDER> Builder<SENDER> builder() {
@@ -230,32 +230,32 @@ public class EternalRandomTp<SENDER> {
         }
 
         public EternalRandomTp<SENDER> build() {
-            Valid.notNull(game, "Game cannot be null");
-            Valid.notNull(scheduler, "Scheduler cannot be null");
-            Valid.notNull(dataFolder, "Data folder cannot be null");
+            Valid.notNull(this.game, "Game cannot be null");
+            Valid.notNull(this.scheduler, "Scheduler cannot be null");
+            Valid.notNull(this.dataFolder, "Data folder cannot be null");
 
-            Valid.notNull(algorithm, "Algorithm cannot be null");
-            Valid.notNull(teleportRange, "Teleport range cannot be null");
-            Valid.notNull(preCorrector, "Position corrector cannot be null");
+            Valid.notNull(this.algorithm, "Algorithm cannot be null");
+            Valid.notNull(this.teleportRange, "Teleport range cannot be null");
+            Valid.notNull(this.preCorrector, "Position corrector cannot be null");
 
-            Valid.notNull(builder, "LiteCommandsBuilder cannot be null");
-            Valid.notNull(profileExtractor, "Profile extractor cannot be null");
+            Valid.notNull(this.builder, "LiteCommandsBuilder cannot be null");
+            Valid.notNull(this.profileExtractor, "Profile extractor cannot be null");
 
-            if (cdnConfigManager == null) {
-                cdnConfigManager = new CdnConfigManager(scheduler, dataFolder);
+            if (this.cdnConfigManager == null) {
+                this.cdnConfigManager = new CdnConfigManager(this.scheduler, this.dataFolder);
             }
 
-            cdnConfigManager.load();
+            this.cdnConfigManager.load();
 
-            if (teleportRepository == null) {
-                teleportRepository = cdnConfigManager.getTeleportData();
+            if (this.teleportRepository == null) {
+                this.teleportRepository = this.cdnConfigManager.getTeleportData();
             }
 
-            if (typeRegistry == null) {
-                typeRegistry = cdnConfigManager.getPluginConfig();
+            if (this.typeRegistry == null) {
+                this.typeRegistry = this.cdnConfigManager.getPluginConfig();
             }
 
-            return new EternalRandomTp<>(game, scheduler, dataFolder, cdnConfigManager, algorithm, teleportRange, preCorrector, postCorrector, teleportRepository, typeRegistry , builder, profileExtractor);
+            return new EternalRandomTp<>(this.game, this.scheduler, this.dataFolder, this.cdnConfigManager, this.algorithm, this.teleportRange, this.preCorrector, this.postCorrector, this.teleportRepository, this.typeRegistry, this.builder, this.profileExtractor);
         }
 
     }

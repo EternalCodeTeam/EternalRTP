@@ -13,7 +13,7 @@ public final class BlockType {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public boolean isNone() {
@@ -42,12 +42,12 @@ public final class BlockType {
             return false;
         }
 
-        return name.equals(blockType.name);
+        return this.name.equals(blockType.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(this.name);
     }
 
 }

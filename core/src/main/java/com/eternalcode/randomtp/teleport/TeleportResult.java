@@ -16,19 +16,19 @@ public class TeleportResult {
     }
 
     public boolean isSuccess() {
-        return success;
+        return this.success;
     }
 
     public boolean isFailure() {
-        return !success;
+        return !this.success;
     }
 
     public Profile getProfile() {
-        return profile;
+        return this.profile;
     }
 
     public Position getTo() {
-        return to;
+        return this.to;
     }
 
     public static TeleportResult success(Profile profile, Position position) {
