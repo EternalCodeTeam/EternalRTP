@@ -17,7 +17,7 @@ public class ProfileContextual<SENDER> implements Contextual<SENDER, Profile> {
 
     @Override
     public Result<Profile, ?> extract(SENDER sender, Invocation<SENDER> invocation) {
-        return extractor.extract(invocation).toResult(Blank.BLANK);
+        return this.extractor.extract(invocation).toResult(Blank.BLANK);
     }
 
     public interface Extractor<SENDER> {

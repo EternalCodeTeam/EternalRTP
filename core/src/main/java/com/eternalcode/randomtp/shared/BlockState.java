@@ -13,11 +13,11 @@ public class BlockState {
     }
 
     public BlockType getBlockType() {
-        return blockType;
+        return this.blockType;
     }
 
     public Position getPosition() {
-        return position;
+        return this.position;
     }
 
     @Override
@@ -30,11 +30,11 @@ public class BlockState {
             return false;
         }
 
-        return position.equals(that.position) && blockType.equals(that.blockType);
+        return this.position.equals(that.position) && this.blockType.equals(that.blockType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(position, blockType);
+        return Objects.hash(this.position, this.blockType);
     }
 }

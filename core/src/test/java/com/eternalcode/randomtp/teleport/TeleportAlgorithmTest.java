@@ -16,9 +16,9 @@ public class TeleportAlgorithmTest {
         TeleportAlgorithm algorithm = new RandomTeleportAlgorithm();
 
         for (int test = 0; test < 1000; test++) {
-            Position position = algorithm.createPosition(range, Universe.NONE);
+            Position position = algorithm.createPosition(this.range, Universe.NONE);
 
-            assertTrue(range.contains(position));
+            assertTrue(this.range.contains(position));
         }
     }
 

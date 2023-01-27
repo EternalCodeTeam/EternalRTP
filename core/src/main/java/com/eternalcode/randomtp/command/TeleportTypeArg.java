@@ -25,12 +25,12 @@ public class TeleportTypeArg implements OneArgument<TeleportType> {
     @Override
     public Result<TeleportType, ?> parse(LiteInvocation invocation, String argument) {
         return this.registry.getType(argument)
-                .toResult(pluginConfig.teleportTypeNotExist);
+                .toResult(this.pluginConfig.teleportTypeNotExist);
     }
 
     @Override
     public List<Suggestion> suggest(LiteInvocation invocation) {
-        return registry.getTypes().keySet().stream()
+        return this.registry.getTypes().keySet().stream()
                 .map(Suggestion::of)
                 .toList();
     }

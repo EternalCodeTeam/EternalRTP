@@ -45,11 +45,11 @@ public class CdnConfigManager {
     }
 
     public CdnPluginConfig getPluginConfig() {
-        return pluginConfig;
+        return this.pluginConfig;
     }
 
     public CdnTeleportGameRepository getTeleportData() {
-        return teleportData;
+        return this.teleportData;
     }
 
     private void loadAndRender(String name, Object object) {

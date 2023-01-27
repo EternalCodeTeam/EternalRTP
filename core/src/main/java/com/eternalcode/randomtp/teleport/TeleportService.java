@@ -39,7 +39,7 @@ public class TeleportService {
     }
 
     public TeleportSettings getSettings() {
-        return settings;
+        return this.settings;
     }
 
     public void setSettings(TeleportSettings settings) {
@@ -67,7 +67,7 @@ public class TeleportService {
                 return;
             }
 
-            scheduler.runSync(() -> {
+            this.scheduler.runSync(() -> {
                 for (Profile profile : profiles) {
                     profile.teleport(position.get()).thenAccept(isSuccess -> {
                         if (isSuccess) {

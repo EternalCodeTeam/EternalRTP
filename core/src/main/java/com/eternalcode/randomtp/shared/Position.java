@@ -36,39 +36,39 @@ public class Position {
     }
 
     public Universe getUniverse() {
-        return universe;
+        return this.universe;
     }
 
     public double getX() {
-        return x;
+        return this.x;
     }
 
     public double getY() {
-        return y;
+        return this.y;
     }
 
     public double getZ() {
-        return z;
+        return this.z;
     }
 
     public int getBlockX() {
-        return (int) Math.floor(x);
+        return (int) Math.floor(this.x);
     }
 
     public int getBlockY() {
-        return (int) Math.floor(y);
+        return (int) Math.floor(this.y);
     }
 
     public int getBlockZ() {
-        return (int) Math.floor(z);
+        return (int) Math.floor(this.z);
     }
 
     public float getYaw() {
-        return yaw;
+        return this.yaw;
     }
 
     public float getPitch() {
-        return pitch;
+        return this.pitch;
     }
 
     public Position add(Position position) {
@@ -104,7 +104,7 @@ public class Position {
     }
 
     public Position multiply(double value) {
-        return new Position(this.universe, this.x * value, this.y * value, z * value, this.yaw, this.pitch);
+        return new Position(this.universe, this.x * value, this.y * value, this.z * value, this.yaw, this.pitch);
     }
 
     public Position divide(Position position) {
@@ -148,12 +148,12 @@ public class Position {
     }
 
     public Position normalize() {
-        double length = Math.sqrt(x * x + y * y + z * z);
-        return new Position(this.universe, x / length, y / length, z / length, this.yaw, this.pitch);
+        double length = Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+        return new Position(this.universe, this.x / length, this.y / length, this.z / length, this.yaw, this.pitch);
     }
 
     public double distance(Position position) {
-        return Math.sqrt((x - position.x) * (x - position.x) + (y - position.y) * (y - position.y) + (z - position.z) * (z - position.z));
+        return Math.sqrt((this.x - position.x) * (this.x - position.x) + (this.y - position.y) * (this.y - position.y) + (this.z - position.z) * (this.z - position.z));
     }
 
     @Override
@@ -166,23 +166,23 @@ public class Position {
             return false;
         }
 
-        return Double.compare(position.x, x) == 0 && Double.compare(position.y, y) == 0 && Double.compare(position.z, z) == 0 && Float.compare(position.yaw, yaw) == 0 && Float.compare(position.pitch, pitch) == 0 && universe.equals(position.universe);
+        return Double.compare(position.x, this.x) == 0 && Double.compare(position.y, this.y) == 0 && Double.compare(position.z, this.z) == 0 && Float.compare(position.yaw, this.yaw) == 0 && Float.compare(position.pitch, this.pitch) == 0 && this.universe.equals(position.universe);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(universe, x, y, z, yaw, pitch);
+        return Objects.hash(this.universe, this.x, this.y, this.z, this.yaw, this.pitch);
     }
 
     @Override
     public String toString() {
         return "Position{" +
-                "universe=" + universe +
-                ", x=" + x +
-                ", y=" + y +
-                ", z=" + z +
-                ", yaw=" + yaw +
-                ", pitch=" + pitch +
+                "universe=" + this.universe +
+                ", x=" + this.x +
+                ", y=" + this.y +
+                ", z=" + this.z +
+                ", yaw=" + this.yaw +
+                ", pitch=" + this.pitch +
                 '}';
     }
 

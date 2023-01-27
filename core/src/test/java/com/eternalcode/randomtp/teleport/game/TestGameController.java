@@ -14,25 +14,26 @@ class TestGameController {
 
     private final GameTest game = new GameTest();
     private final TeleportService teleportService = TeleportTestFactory.builder()
-            .game(game)
+            .game(this.game)
             .build();
 
-    private final TeleportGameRepository teleportRepository = CdnTeleportGameRepository.empty(() -> {});
+    private final TeleportGameRepository teleportRepository = CdnTeleportGameRepository.empty(() -> {
+    });
     private final CdnPluginConfig config = new CdnPluginConfig();
 
-    private final TeleportGameController teleportGameController = new TeleportGameController(teleportService, teleportRepository, config, config, game);
+    private final TeleportGameController teleportGameController = new TeleportGameController(this.teleportService, this.teleportRepository, this.config, this.config, this.game);
 
     @Test
     void test() {
         TestProfile testProfile = new TestProfile();
-        TeleportType normal = config.getType("normal").orElseThrow(AssertionError::new);
+        TeleportType normal = this.config.getType("normal").orThrow(AssertionError::new);
 
         BlockState pillar = new BlockState(Position.ONE, normal.getCoreType());
         BlockState button = new BlockState(Position.ZERO, normal.getButtonBlock());
 
-        teleportRepository.saveTeleport("test", pillar.getPosition(), normal.getName());
-        game.setButton(button, pillar);
-        teleportGameController.handleRightClick(button, testProfile).join();
+        this.teleportRepository.saveTeleport("test", pillar.getPosition(), normal.getName());
+        this.game.setButton(button, pillar);
+        this.teleportGameController.handleRightClick(button, testProfile).join();
 
         testProfile.assertTeleportCount(1);
     }

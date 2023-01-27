@@ -4,12 +4,13 @@ plugins {
     id("com.eternalcode.java-conventions")
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("net.minecrell.plugin-yml.bukkit") version "0.5.2"
+    id("xyz.jpenilla.run-paper") version "2.0.1"
 }
 
 dependencies {
     implementation(project(":core"))
 
-    compileOnly("org.spigotmc:spigot-api:1.19.1-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.19.3-R0.1-SNAPSHOT")
     implementation("io.papermc:paperlib:1.0.8")
     implementation("dev.rollczi.litecommands:bukkit:2.8.0")
 
@@ -54,5 +55,11 @@ tasks.withType<ShadowJar> {
         "io.papermc.lib"
     ).forEach { pack ->
         relocate(pack, "$prefix.$pack")
+    }
+}
+
+tasks {
+    runServer {
+        minecraftVersion("1.19.3")
     }
 }
