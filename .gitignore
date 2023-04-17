@@ -1,14 +1,11 @@
-# intellij
-*.iml
-*.ipr
-*.iws
-.gradle/
-out/
-build/
-/.idea/
-run/
+# Ignore Gradle project-specific cache directory
+.gradle
 
-.DS_Store
-[Dd]esktop.ini
+# Ignore Gradle build output directory
+build
 
-!gradle/wrapper/gradle-wrapper.jar
+# Ignore .idea directory
+.idea
+
+# ignore run server directory
+run
