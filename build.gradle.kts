@@ -41,6 +41,9 @@ dependencies {
 
     // litecommands
     implementation("dev.rollczi.litecommands:bukkit-adventure:2.8.7")
+
+    // cdn configs
+    implementation("net.dzikoysk:cdn:1.14.4")
 }
 
 java {
@@ -84,6 +87,7 @@ tasks {
             "dev.rollczi.litecommands",
             "panda.std",
             "net.kyori",
+            "net.dzikoysk",
         ).forEach { relocate(it, prefix) }
     }
 }

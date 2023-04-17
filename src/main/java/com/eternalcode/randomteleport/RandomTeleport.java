@@ -1,5 +1,9 @@
 package com.eternalcode.randomteleport;
 
+import com.eternalcode.randomteleport.config.ConfigManager;
+import com.eternalcode.randomteleport.config.impl.ButtonDataConfig;
+import com.eternalcode.randomteleport.teleport.TeleportButtonService;
+import com.eternalcode.randomteleport.teleport.TeleportController;
 import com.eternalcode.randomteleport.teleport.TeleportService;
 import dev.rollczi.litecommands.LiteCommands;
 import dev.rollczi.litecommands.bukkit.adventure.platform.LiteBukkitAdventurePlatformFactory;
@@ -23,15 +27,21 @@ public class RandomTeleport extends JavaPlugin {
 
         this.audienceProvider = BukkitAudiences.create(this);
 
+        ConfigManager configManager = new ConfigManager(this.getDataFolder());
+        ButtonDataConfig buttonDataConfig = configManager.load(new ButtonDataConfig());
+
         TeleportService teleportService = new TeleportService();
+        TeleportButtonService teleportButtonService = new TeleportButtonService();
 
         this.liteCommands = LiteBukkitAdventurePlatformFactory.builder(server, "randomteleport", this.audienceProvider)
                 .argument(Player.class, new BukkitPlayerArgument<>(this.getServer(), "cant find player"))
                 .contextualBind(Player.class, new BukkitOnlyPlayerContextual<>("only for console"))
 
-                .commandInstance(new RandomTeleportCommand(teleportService))
+                .commandInstance(new RandomTeleportCommand(teleportService, teleportButtonService, buttonDataConfig, configManager))
 
                 .register();
+
+        server.getPluginManager().registerEvents(new TeleportController(), this);
     }
 
     @Override
