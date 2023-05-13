@@ -2,4 +2,4 @@
 🗺️ A random teleport plugin that doesn't give you a headache.
 
 ## ⚠️ Disclaimer
-Kod nie został dobrze napisany, jest to tylko eksperyment z przesadzoną abstrakcją i implementacją dla bukkit, nie zalecam sugerować się tym kodem w swoich projektach.
+The code is not well written, it's just an experiment with overkill abstraction and implementation for bukkit, I don't recommend using this code in your projects and using it on your server.
