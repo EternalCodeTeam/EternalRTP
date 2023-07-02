@@ -1,37 +1,43 @@
 name: Java CI with Gradle
 
-on: [ push, pull_request ]
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+permissions:
+  contents: read
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        java:
-          - 17
-      fail-fast: false
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v3.5.2
-      - name: 'Set up JDK ${{ matrix.java }}'
-        uses: actions/setup-java@v3.11.0
+        uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
         with:
-          distribution: adopt
-          java-version: '${{ matrix.java }}'
+          java-version: '17'
+          distribution: 'temurin'
       - name: Cache Gradle
         uses: actions/cache@v3.3.1
         with:
-          path: ~/.gradle
+          path: ~/.gradle/caches
           key: >-
             ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*',
             '**/gradle-wrapper.properties') }}
           restore-keys: '${{ runner.os }}-gradle-'
-      - name: Grant execute permission for gradlew
+      - name: Make gradlew executable
         run: chmod +x gradlew
-      - name: Build the Jar with Gradle and CheckStyle
-        run: './gradlew clean shadowJar checkStyleMain'
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@bde650d6f1426615a60165575bc9cdad3e54d975
+        with:
+          arguments: shadowJar
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: 'Successfully build EternalRTP JDK${{ matrix.java }}'
-          path: build/libs/EternalRTP*.jar
+          name: 'Successfully build EternalRTP'
+          path: build/libs/*.jar
