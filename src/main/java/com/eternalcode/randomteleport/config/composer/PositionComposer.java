@@ -1,0 +1,18 @@
+package com.eternalcode.randomteleport.config.composer;
+
+import com.eternalcode.randomteleport.shared.Position;
+import panda.std.Result;
+
+public class PositionComposer implements SimpleComposer<Position> {
+
+    @Override
+    public Result<Position, Exception> deserialize(String source) {
+        return Result.supplyThrowing(IllegalArgumentException.class, () -> Position.parse(source));
+    }
+
+    @Override
+    public Result<String, Exception> serialize(Position entity) {
+        return Result.ok(entity.toString());
+    }
+
+}

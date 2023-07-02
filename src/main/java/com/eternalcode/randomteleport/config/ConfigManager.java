@@ -1,7 +1,10 @@
 package com.eternalcode.randomteleport.config;
 
+import com.eternalcode.randomteleport.config.composer.PositionComposer;
+import com.eternalcode.randomteleport.shared.Position;
 import net.dzikoysk.cdn.Cdn;
 import net.dzikoysk.cdn.CdnFactory;
+import net.dzikoysk.cdn.reflect.Visibility;
 
 import java.io.File;
 import java.util.HashSet;
@@ -12,6 +15,9 @@ public class ConfigManager {
     private final Cdn cdn = CdnFactory
             .createYamlLike()
             .getSettings()
+            .withMemberResolver(Visibility.PRIVATE)
+            .withMemberResolver(Visibility.PACKAGE_PRIVATE)
+            .withComposer(Position.class, new PositionComposer())
             .build();
 
     private final Set<ReloadableConfig> configs = new HashSet<>();

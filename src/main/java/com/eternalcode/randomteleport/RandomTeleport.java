@@ -31,7 +31,7 @@ public class RandomTeleport extends JavaPlugin {
         ButtonDataConfig buttonDataConfig = configManager.load(new ButtonDataConfig());
 
         TeleportService teleportService = new TeleportService();
-        TeleportButtonService teleportButtonService = new TeleportButtonService();
+        TeleportButtonService teleportButtonService = new TeleportButtonService(buttonDataConfig, configManager);
 
         this.liteCommands = LiteBukkitAdventurePlatformFactory.builder(server, "randomteleport", this.audienceProvider)
                 .argument(Player.class, new BukkitPlayerArgument<>(this.getServer(), "cant find player"))
